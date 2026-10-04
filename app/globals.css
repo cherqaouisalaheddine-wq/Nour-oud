@@ -45,124 +45,308 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/*
+ * Oudia design tokens.
+ * Palette is deliberately narrow: ink (near-black), bone (warm ivory) and a
+ * single champagne accent. Gold is used as punctuation only - hairlines, small
+ * caps labels and focus rings - never as a large fill.
+ */
 :root {
   color-scheme: light;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+
+  /* Core surfaces */
+  --background: oklch(0.97 0.006 85);
+  --foreground: oklch(0.16 0.006 60);
+  --card: oklch(0.985 0.005 85);
+  --card-foreground: oklch(0.16 0.006 60);
+  --popover: oklch(0.985 0.005 85);
+  --popover-foreground: oklch(0.16 0.006 60);
+
+  --primary: oklch(0.16 0.006 60);
+  --primary-foreground: oklch(0.97 0.006 85);
+  --secondary: oklch(0.94 0.008 85);
+  --secondary-foreground: oklch(0.16 0.006 60);
+  --muted: oklch(0.94 0.008 85);
+  --muted-foreground: oklch(0.5 0.012 70);
+  --accent: oklch(0.78 0.075 78);
+  --accent-foreground: oklch(0.16 0.006 60);
+
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --border: oklch(0.16 0.006 60 / 12%);
+  --input: oklch(0.16 0.006 60 / 14%);
+  --ring: oklch(0.78 0.075 78);
+
+  --chart-1: oklch(0.16 0.006 60);
+  --chart-2: oklch(0.78 0.075 78);
+  --chart-3: oklch(0.5 0.012 70);
+  --chart-4: oklch(0.7 0.02 78);
+  --chart-5: oklch(0.3 0.01 60);
+  --radius: 0.5rem;
+  --sidebar: oklch(0.985 0.005 85);
+  --sidebar-foreground: oklch(0.16 0.006 60);
+  --sidebar-primary: oklch(0.16 0.006 60);
+  --sidebar-primary-foreground: oklch(0.97 0.006 85);
+  --sidebar-accent: oklch(0.94 0.008 85);
+  --sidebar-accent-foreground: oklch(0.16 0.006 60);
+  --sidebar-border: oklch(0.16 0.006 60 / 12%);
+  --sidebar-ring: oklch(0.78 0.075 78);
+
+  /* Semantic brand palette */
+  --ink: oklch(0.16 0.006 60);
+  --ink-soft: oklch(0.24 0.008 60);
+  --ink-muted: oklch(0.52 0.012 70);
+  --bone: oklch(0.97 0.006 85);
+  --bone-deep: oklch(0.93 0.008 85);
+  --champagne: oklch(0.78 0.075 78);
+  --champagne-soft: oklch(0.9 0.04 82);
+  --hairline: oklch(0.16 0.006 60 / 12%);
+  --hairline-strong: oklch(0.16 0.006 60 / 24%);
+
+  /* Type scale, driven by the display serif loaded in layout.tsx */
+  --font-display: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
+  --font-body: var(--font-sans), 'Inter', system-ui, sans-serif;
+
+  --ease-luxury: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .dark {
   color-scheme: dark;
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  --background: oklch(0.16 0.006 60);
+  --foreground: oklch(0.97 0.006 85);
+  --card: oklch(0.2 0.008 60);
+  --card-foreground: oklch(0.97 0.006 85);
+  --popover: oklch(0.2 0.008 60);
+  --popover-foreground: oklch(0.97 0.006 85);
+  --primary: oklch(0.97 0.006 85);
+  --primary-foreground: oklch(0.16 0.006 60);
+  --secondary: oklch(0.26 0.008 60);
+  --secondary-foreground: oklch(0.97 0.006 85);
+  --muted: oklch(0.26 0.008 60);
+  --muted-foreground: oklch(0.72 0.01 78);
+  --accent: oklch(0.82 0.08 80);
+  --accent-foreground: oklch(0.16 0.006 60);
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not(.light) {
-    color-scheme: dark;
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.922 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
-  }
+  --border: oklch(0.97 0.006 85 / 14%);
+  --input: oklch(0.97 0.006 85 / 16%);
+  --ring: oklch(0.82 0.08 80);
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
-    font-family: Arial, Helvetica, sans-serif;
+
+  html {
+    scroll-behavior: smooth;
+    /* Sticky header is 72px; keeps anchored sections clear of it. */
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
   }
 
-  .font-serif {
-    font-family: Georgia, 'Times New Roman', serif;
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+    font-feature-settings: 'kern', 'liga';
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Display headings use the serif, with optical sizing for large sizes. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.015em;
+  }
+
+  ::selection {
+    background: var(--champagne-soft);
+    color: var(--ink);
+  }
+
+  /* Visible, on-brand focus ring for keyboard users only. */
+  :focus-visible {
+    outline: 2px solid var(--champagne);
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  /*
+   * Small-caps label. Used above every section heading to give the page a
+   * consistent editorial rhythm. The gold hairline is the only ornament.
+   */
+  .eyebrow {
+    font-family: var(--font-body);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--champagne);
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    font-size: clamp(2.25rem, 5vw, 3.75rem);
+  }
+
+  /* Solid primary action. */
+  .btn-ink {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    background: var(--ink);
+    color: var(--bone);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 1.0625rem 2rem;
+    min-height: 3.25rem;
+    transition:
+      background-color 0.5s var(--ease-luxury),
+      color 0.5s var(--ease-luxury);
+  }
+
+  .btn-ink:hover {
+    background: var(--ink-soft);
+  }
+
+  /* Outlined secondary action. */
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    border: 1px solid var(--hairline-strong);
+    color: var(--ink);
+    background: transparent;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 1.0625rem 2rem;
+    min-height: 3.25rem;
+    transition:
+      border-color 0.5s var(--ease-luxury),
+      background-color 0.5s var(--ease-luxury);
+  }
+
+  .btn-outline:hover {
+    border-color: var(--ink);
+    background: color-mix(in oklab, var(--ink) 4%, transparent);
+  }
+
+  /* On dark panels the pair inverts. */
+  .btn-bone {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    background: var(--bone);
+    color: var(--ink);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 1.0625rem 2rem;
+    min-height: 3.25rem;
+    transition: background-color 0.5s var(--ease-luxury);
+  }
+
+  .btn-bone:hover {
+    background: #fff;
+  }
+
+  .btn-outline-bone {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    border: 1px solid color-mix(in oklab, var(--bone) 32%, transparent);
+    color: var(--bone);
+    background: transparent;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 1.0625rem 2rem;
+    min-height: 3.25rem;
+    transition:
+      border-color 0.5s var(--ease-luxury),
+      background-color 0.5s var(--ease-luxury);
+  }
+
+  .btn-outline-bone:hover {
+    border-color: var(--bone);
+    background: color-mix(in oklab, var(--bone) 8%, transparent);
+  }
+
+  /* Respect users who ask for less motion. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+@layer utilities {
+  /*
+   * Scroll reveal. Elements start hidden and slightly offset; the
+   * IntersectionObserver in <Reveal> flips data-revealed to run the
+   * transition. No JS animation library involved.
+   */
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.9s var(--ease-luxury),
+      transform 0.9s var(--ease-luxury);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
+  }
+
+  .reveal[data-revealed='true'] {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Entrance keyframes for above-the-fold hero copy. */
+  @keyframes rise-in {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .animate-rise {
+    animation: rise-in 1s var(--ease-luxury) both;
+  }
+
+  /* Fine gold hairline, used to close sections. */
+  .rule-gold {
+    background: linear-gradient(
+      to right,
+      transparent,
+      color-mix(in oklab, var(--champagne) 55%, transparent),
+      transparent
+    );
   }
 }

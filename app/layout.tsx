@@ -1,11 +1,38 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
+import { Cormorant_Garamond, Inter } from 'next/font/google'
 import './globals.css'
 
+/**
+ * Display face for headings. A high-contrast Garamond reads as perfume-house
+ * editorial rather than tech-brand geometric.
+ */
+const display = Cormorant_Garamond({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600'],
+  variable: '--font-serif',
+  display: 'swap',
+})
+
+/** Body face. Neutral grotesque so it stays out of the way of the serif. */
+const sans = Inter({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  display: 'swap',
+})
+
 export const metadata: Metadata = {
-  title: 'Nour Oud | Parfums d’exception',
-  description: 'Découvrez notre collection de parfums arabes, oud, musc et ambre. Commandez facilement via WhatsApp.',
+  title: 'Oudia | Parfums d’exception',
+  description:
+    'Oudia façonne des parfums orientaux d’exception. Oud, ambre et musc sélectionnés au Maroc. Livraison partout au Maroc, paiement à la livraison.',
   generator: 'v0.app',
+  openGraph: {
+    title: 'Oudia | Parfums d’exception',
+    description:
+      'Oud, ambre et musc sélectionnés au Maroc. Livraison partout au Maroc, paiement à la livraison.',
+    locale: 'fr_MA',
+    type: 'website',
+  },
   icons: {
     icon: [
       {
@@ -26,11 +53,8 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  colorScheme: 'light dark',
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: 'white' },
-    { media: '(prefers-color-scheme: dark)', color: 'black' },
-  ],
+  colorScheme: 'light',
+  themeColor: '#0d0b0a',
 }
 
 export default function RootLayout({
@@ -39,7 +63,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="fr">
+    <html lang="fr" className={`${display.variable} ${sans.variable}`}>
       <body className="antialiased">
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
