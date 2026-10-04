@@ -12,12 +12,12 @@ const ICONS = {
   MessageCircle,
 } as const
 
-export function WhyOudia() {
+export function WhyNourElOud() {
   return (
     <section id="avantages" className="bg-[var(--bone-deep)] px-5 py-20 lg:px-8 lg:py-28">
       <div className="mx-auto max-w-7xl">
         <Reveal>
-          <p className="eyebrow text-center">Pourquoi Oudia</p>
+          <p className="eyebrow text-center">Pourquoi NOUR EL OUD</p>
           <h2 className="section-title mx-auto mt-4 max-w-xl text-center">
             L&apos;achat en toute simplicité
           </h2>

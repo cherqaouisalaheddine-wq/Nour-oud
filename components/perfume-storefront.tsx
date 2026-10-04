@@ -12,7 +12,7 @@ import { BrandStory } from '@/components/brand-story'
 import { CategoryGrid } from '@/components/category-grid'
 import { BestSellers } from '@/components/best-sellers'
 import { PromoBanner } from '@/components/promo-banner'
-import { WhyOudia } from '@/components/why-oudia'
+import { WhyNourElOud } from '@/components/why-nour-el-oud'
 import { Testimonials } from '@/components/testimonials'
 import { Newsletter } from '@/components/newsletter'
 import { QuickView } from '@/components/product-quickview'
@@ -79,7 +79,7 @@ function Storefront() {
         <CategoryGrid />
         <BestSellers onView={setSelectedProduct} />
         <PromoBanner />
-        <WhyOudia />
+        <WhyNourElOud />
         <Testimonials />
         <Newsletter />
       </main>

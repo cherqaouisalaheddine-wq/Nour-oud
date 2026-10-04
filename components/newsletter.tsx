@@ -20,7 +20,7 @@ export function Newsletter() {
   const [email, setEmail] = useState('')
 
   const target = whatsappLink(
-    `Bonjour, je souhaite m'inscrire à la lettre d'information Oudia.\n\nMon email : ${email.trim()}`,
+    `Bonjour, je souhaite m'inscrire à la lettre d'information NOUR EL OUD.\n\nMon email : ${email.trim()}`,
   )
 
   return (

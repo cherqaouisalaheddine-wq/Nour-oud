@@ -11,7 +11,7 @@ export function Hero() {
       {/* Product visual */}
       <img
         src="/oud-hero.png"
-        alt="Flacon de parfum Oudia entouré de bois précieux"
+        alt="Flacon de parfum NOUR EL OUD entouré de bois précieux"
         className="absolute inset-0 size-full object-cover"
       />
       {/* Two-stop scrim: legibility at the copy, atmosphere at the top. */}

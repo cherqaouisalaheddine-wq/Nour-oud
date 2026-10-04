@@ -22,12 +22,12 @@ const sans = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'Oudia | Parfums d’exception',
+  title: 'NOUR EL OUD | Parfums d’exception',
   description:
-    'Oudia façonne des parfums orientaux d’exception. Oud, ambre et musc sélectionnés au Maroc. Livraison partout au Maroc, paiement à la livraison.',
+    'NOUR EL OUD façonne des parfums orientaux d’exception. Oud, ambre et musc sélectionnés au Maroc. Livraison partout au Maroc, paiement à la livraison.',
   generator: 'v0.app',
   openGraph: {
-    title: 'Oudia | Parfums d’exception',
+    title: 'NOUR EL OUD | Parfums d’exception',
     description:
       'Oud, ambre et musc sélectionnés au Maroc. Livraison partout au Maroc, paiement à la livraison.',
     locale: 'fr_MA',

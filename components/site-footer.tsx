@@ -30,7 +30,7 @@ const SOCIAL_LINKS = [
   { label: 'Facebook', href: siteConfig.social.facebook, Icon: FacebookGlyph },
   {
     label: 'WhatsApp',
-    href: whatsappLink('Bonjour Oudia, je souhaite avoir plus d’informations.'),
+    href: whatsappLink('Bonjour NOUR EL OUD, je souhaite avoir plus d’informations.'),
     Icon: MessageCircle,
   },
 ] as const
@@ -49,10 +49,10 @@ export function SiteFooter() {
                 aria-hidden="true"
                 className="flex size-9 items-center justify-center border border-[var(--champagne)] text-[0.6875rem] tracking-[0.1em] text-[var(--champagne)]"
               >
-                O
+                N
               </span>
               <span className="font-[family-name:var(--font-display)] text-2xl tracking-[0.22em]">
-                OUDIA
+                {siteConfig.name}
               </span>
             </div>
             <p className="mt-5 max-w-xs text-sm leading-[1.9] text-[var(--bone)]/55">
@@ -106,18 +106,18 @@ export function SiteFooter() {
               <p>Casablanca, Maroc</p>
               <p>
                 <a
-                  href="mailto:bonjour@oudia.ma"
+                  href="mailto:bonjour@nour-el-oud.ma"
                   className="inline-flex items-center gap-2 transition-colors duration-400 hover:text-[var(--bone)]"
                 >
                   <Mail className="size-3.5" strokeWidth={1.5} aria-hidden="true" />
-                  bonjour@oudia.ma
+                  bonjour@nour-el-oud.ma
                 </a>
               </p>
               <p>Lun – Sam · 9h – 19h</p>
             </address>
 
             <a
-              href={whatsappLink('Bonjour Oudia, j’ai une question.')}
+              href={whatsappLink('Bonjour NOUR EL OUD, j’ai une question.')}
               target="_blank"
               rel="noreferrer"
               className="btn-outline-bone mt-6 min-h-11! px-5! py-2.5! text-[0.625rem]!"

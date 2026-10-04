@@ -1,7 +1,7 @@
 import type { ScentFamily } from '@/lib/products'
 
 export const siteConfig = {
-  name: 'Oudia',
+  name: 'NOUR EL OUD',
   tagline: "Parfums d'exception",
   origin: 'Fait au Maroc',
   announcement: 'Livraison offerte à partir de 500 DH · Paiement à la livraison',

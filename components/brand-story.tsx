@@ -35,7 +35,7 @@ export function BrandStory() {
             <div className="aspect-4/5 overflow-hidden bg-[var(--bone-deep)]">
               <img
                 src="/products/makhsouse-oud.jpg"
-                alt="Flacon Makhsouse Oud, pièce signature de la maison Oudia"
+                alt="Flacon Makhsouse Oud, pièce signature de la maison NOUR EL OUD"
                 loading="lazy"
                 className="size-full object-cover"
               />
@@ -58,7 +58,7 @@ export function BrandStory() {
             <Reveal delay={100}>
               <div className="mt-8 space-y-4 text-sm leading-[1.9] text-[var(--ink-muted)]">
                 <p>
-                  Oudia est née d&apos;une conviction simple : un bon parfum ne
+                  NOUR EL OUD est née d&apos;une conviction simple : un bon parfum ne
                   se remarque pas, il se retient. Il accompagne celui qui le
                   porte et révèle ce qu&apos;il ne dit pas.
                 </p>

@@ -77,11 +77,14 @@ export function SiteHeader({
               aria-hidden="true"
               className="flex size-9 items-center justify-center border border-[var(--champagne)] text-[0.6875rem] tracking-[0.1em] text-[var(--champagne)]"
             >
-              O
+              N
             </span>
             <span className="flex flex-col leading-none">
-              <span className="font-[family-name:var(--font-display)] text-xl tracking-[0.22em]">
-                OUDIA
+              {/* "NOUR EL OUD" is wider than the previous wordmark, so the
+                  tracking/size step down on small screens to keep the mobile
+                  header from overflowing. Desktop is unchanged. */}
+              <span className="font-[family-name:var(--font-display)] text-base tracking-[0.12em] lg:text-xl lg:tracking-[0.22em]">
+                {siteConfig.name}
               </span>
               <span className="mt-1 text-[0.5rem] tracking-[0.3em] uppercase text-[var(--ink-muted)]">
                 {siteConfig.tagline}

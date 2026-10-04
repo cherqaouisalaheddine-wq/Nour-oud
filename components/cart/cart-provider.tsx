@@ -42,7 +42,7 @@ type CartContextValue = {
   close: () => void
 }
 
-const STORAGE_KEY = 'oudia.cart.v1'
+const STORAGE_KEY = 'nour-el-oud.cart.v1'
 const MAX_PER_LINE = 20
 
 const CartContext = createContext<CartContextValue | null>(null)
