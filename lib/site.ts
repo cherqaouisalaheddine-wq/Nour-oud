@@ -73,7 +73,7 @@ export const scentFamilies: ScentFamilyMeta[] = [
     name: 'Ambre',
     tagline: 'Chaleur enveloppante',
     description:
-      'Ambre suifé, miel et cuir. Des parfums doux et bright qui restent toute la journée.',
+      'Ambre suifé, miel et cuir. Des parfums doux et lumineux qui restent toute la journée.',
     gradient: 'from-[#5d2b19] via-[#9a5a2c] to-[#d8953b]',
   },
   {

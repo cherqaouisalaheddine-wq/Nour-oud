@@ -20,7 +20,7 @@ export function Newsletter() {
   const [email, setEmail] = useState('')
 
   const target = whatsappLink(
-    `Bonjour, je souhaite m'inscrire au letters d'information Oudia.\n\nMon email : ${email.trim()}`,
+    `Bonjour, je souhaite m'inscrire à la lettre d'information Oudia.\n\nMon email : ${email.trim()}`,
   )
 
   return (
@@ -28,7 +28,7 @@ export function Newsletter() {
       <div className="mx-auto max-w-3xl">
         <Reveal>
           <div className="text-center">
-            <p className="eyebrow">Le letters</p>
+            <p className="eyebrow">La lettre</p>
             <h2 className="section-title mt-4">Restez informé</h2>
             <p className="mx-auto mt-5 max-w-md text-sm leading-[1.9] text-[var(--ink-muted)]">
               Les nouvelles compositions, les éditions limitées et les conseils
@@ -70,7 +70,7 @@ export function Newsletter() {
 
             <p className="mt-4 flex items-center justify-center gap-2 text-center text-xs text-[var(--ink-muted)]">
               <ArrowRight className="size-3" strokeWidth={1.5} aria-hidden="true" />
-              L&apos;inscription se faitvia WhatsApp — aucun email n&apos;est stocké.
+              L&apos;inscription se fait via WhatsApp — aucun email n&apos;est stocké.
             </p>
           </form>
         </Reveal>

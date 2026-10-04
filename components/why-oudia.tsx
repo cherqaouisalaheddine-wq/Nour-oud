@@ -19,7 +19,7 @@ export function WhyOudia() {
         <Reveal>
           <p className="eyebrow text-center">Pourquoi Oudia</p>
           <h2 className="section-title mx-auto mt-4 max-w-xl text-center">
-            L&apos;achat, sans friction
+            L&apos;achat en toute simplicité
           </h2>
         </Reveal>
 
