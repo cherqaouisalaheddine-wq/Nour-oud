@@ -1,4 +1,4 @@
-import type { ScentFamily } from '@/lib/products'
+import type { MainCategoryId, ScentFamily } from '@/lib/products'
 
 /**
  * Non-translatable brand configuration.
@@ -28,20 +28,35 @@ export function whatsappLink(message: string) {
 }
 
 /**
- * Header navigation structure. Hrefs are in-page anchors and therefore
- * language-independent; labels resolve from `dict.nav.items[key]`.
+ * Header navigation structure.
+ *
+ * Two kinds of entry: a `categoryId` opens a universe listing page (the link is
+ * built per locale by the header), while `href` is an in-page anchor on the
+ * homepage. The header prefixes anchors with the active locale so they also work
+ * from a category page. Labels resolve from `dict.nav.items[key]`.
  */
-export const navItems = [
+export type NavItem =
+  | { key: NavKey; href: string }
+  | { key: NavKey; categoryId: MainCategoryId }
+
+export type NavKey =
+  | 'home'
+  | 'oriental'
+  | 'designer'
+  | 'collections'
+  | 'men'
+  | 'women'
+  | 'about'
+
+export const navItems: readonly NavItem[] = [
   { key: 'home', href: '#accueil' },
+  { key: 'oriental', categoryId: 'orientaux' },
+  { key: 'designer', categoryId: 'marques' },
   { key: 'collections', href: '#collection' },
   { key: 'men', href: '#collection?genre=Homme' },
   { key: 'women', href: '#collection?genre=Femme' },
-  { key: 'unisex', href: '#categories' },
-  { key: 'oud', href: '#categories' },
   { key: 'about', href: '#histoire' },
-] as const
-
-export type NavKey = (typeof navItems)[number]['key']
+]
 
 /**
  * Large visual category cards. Imagery, availability and the deep-link target

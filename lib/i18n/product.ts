@@ -1,11 +1,13 @@
 import type { Locale } from '@/lib/i18n/config'
-import type { Product } from '@/lib/products'
 
-/** The subset of a product that carries translated copy. */
-type ProductCopy = Pick<
-  Product,
-  'name' | 'nameAr' | 'notes' | 'notesAr' | 'description' | 'descriptionAr'
->
+/**
+ * The shapes the copy helpers need. They are structural on purpose: both the
+ * full `Product` type and the price-less `UpcomingProduct` type satisfy them,
+ * so the two can share the same name/description helpers.
+ */
+export type NameCopy = { name: string; nameAr: string }
+export type NotesCopy = { notes: string; notesAr: string }
+export type DescriptionCopy = { description: string; descriptionAr: string }
 
 /**
  * Primary product title.
@@ -14,19 +16,19 @@ type ProductCopy = Pick<
  * Arabic storefront the Arabic name leads and the Latin name becomes the
  * secondary line, which reads far better for an Arabic-speaking shopper.
  */
-export function productName(product: ProductCopy, locale: Locale) {
+export function productName(product: NameCopy, locale: Locale) {
   return locale === 'ar' ? product.nameAr : product.name
 }
 
 /** The name shown beneath the primary title (the "other" language). */
-export function productAltName(product: ProductCopy, locale: Locale) {
+export function productAltName(product: NameCopy, locale: Locale) {
   return locale === 'ar' ? product.name : product.nameAr
 }
 
-export function productNotes(product: ProductCopy, locale: Locale) {
+export function productNotes(product: NotesCopy, locale: Locale) {
   return locale === 'ar' ? product.notesAr : product.notes
 }
 
-export function productDescription(product: ProductCopy, locale: Locale) {
+export function productDescription(product: DescriptionCopy, locale: Locale) {
   return locale === 'ar' ? product.descriptionAr : product.description
 }

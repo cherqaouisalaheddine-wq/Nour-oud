@@ -2,12 +2,31 @@ export type Gender = 'Homme' | 'Femme'
 
 export type ScentFamily = 'Oud' | 'Ambre' | 'Musc' | 'Floral'
 
+/**
+ * The two top-level merchandising universes. Display names are translated in
+ * the dictionaries; the route segments live in `lib/categories.ts`.
+ *
+ * - `orientaux` — the maison's Arabic & oud fragrances.
+ * - `marques`   — international and contemporary designer fragrances.
+ */
+export const mainCategoryIds = ['orientaux', 'marques'] as const
+
+export type MainCategoryId = (typeof mainCategoryIds)[number]
+
+/** A fully verified, purchasable catalogue entry. */
 export type Product = {
   slug: string
   /** Latin product name. Brand names stay Latin in both languages. */
   name: string
   /** Arabic name, shown as the primary title in the Arabic storefront. */
   nameAr: string
+  /**
+   * Brand or maison, kept Latin in both languages. Optional: the maison's own
+   * line omits it because the shop itself is the brand.
+   */
+  brand?: string
+  /** Universe this perfume is merchandised under. */
+  mainCategory: MainCategoryId
   price: number
   gender: Gender
   category: ScentFamily
@@ -27,6 +46,30 @@ export type Product = {
 }
 
 /**
+ * A fragrance we know exists but whose information is not verified yet.
+ *
+ * Deliberately has no `price`, no stock and no photograph: nothing here can be
+ * invented, and because there is no price the storefront can never present it
+ * as purchasable or add it to the cart. Customers can only ask about it over
+ * WhatsApp until the supplier confirms price, format and availability, at
+ * which point the entry is promoted to a `Product`.
+ */
+export type UpcomingProduct = {
+  slug: string
+  /** Brand and fragrance name exactly as given; never translated. */
+  name: string
+  /** Arabic label for discovery only. */
+  nameAr: string
+  mainCategory: MainCategoryId
+  /** Availability notice, French. Never a specification. */
+  description: string
+  /** Availability notice, Arabic. Never a specification. */
+  descriptionAr: string
+  /** Decorative tile gradient, so the card reads as premium without a photo. */
+  color: string
+}
+
+/**
  * Catalogue source of truth.
  *
  * `slug`, `description`, `rating` and `reviews` were added so cards, the
@@ -34,8 +77,13 @@ export type Product = {
  * Prices, notes, imagery and merchandising tags are unchanged. The Arabic
  * fields (`nameAr`, `notesAr`, `descriptionAr`) were added for the bilingual
  * storefront; Latin brand names are intentionally kept as-is.
+ *
+ * The array below holds the maison's own collection; its universe is applied
+ * when it is exported as `products`. A verified designer fragrance is added by
+ * appending to `designerProducts` instead, which keeps every product assigned
+ * to the right universe without editing the whole list.
  */
-export const products: Product[] = [
+const maisonProducts: Omit<Product, 'mainCategory'>[] = [
   {
     slug: 'ameerat-oud-amber',
     name: 'Ameerat Oud Amber',
@@ -513,6 +561,65 @@ export const products: Product[] = [
   },
 ]
 
+/**
+ * Verified designer / international fragrances.
+ *
+ * Empty on purpose: no price, format or availability has been confirmed for
+ * these brands yet, so publishing them here would mean inventing data. When a
+ * supplier confirms a reference, add it to this array (with `brand`) and it
+ * immediately renders as a normal, purchasable card under `marques`.
+ */
+const designerProducts: Omit<Product, 'mainCategory'>[] = []
+
+/**
+ * The full verified catalogue, with each entry assigned to its universe.
+ * Ordered maison first, then designer.
+ */
+export const products: Product[] = [
+  ...maisonProducts.map((product) => ({ ...product, mainCategory: 'orientaux' as const })),
+  ...designerProducts.map((product) => ({ ...product, mainCategory: 'marques' as const })),
+]
+
+/**
+ * Fragrances listed for discovery whose information is not confirmed yet.
+ *
+ * No prices, specifications or photographs are invented here, and because these
+ * entries carry no price they are never purchasable. Names are exactly the
+ * brand / fragrance names supplied; only the availability notice is translated.
+ */
+export const upcomingProducts: UpcomingProduct[] = [
+  {
+    slug: 'prada',
+    name: 'Prada',
+    nameAr: 'برادا',
+    mainCategory: 'marques',
+    description:
+      'Référence Prada en cours de référencement. Prix, format et disponibilité à confirmer.',
+    descriptionAr: 'مرجع برادا قيد التوفير. السعر والحجم والتوفّر قيد التأكيد.',
+    color: 'from-[#151313] to-[#4a4644]',
+  },
+  {
+    slug: 'afnan-9pm',
+    name: 'Afnan 9PM',
+    nameAr: 'أفنان 9PM',
+    mainCategory: 'marques',
+    description:
+      'Référence Afnan 9PM en cours de référencement. Prix, format et disponibilité à confirmer.',
+    descriptionAr: 'مرجع أفنان 9PM قيد التوفير. السعر والحجم والتوفّر قيد التأكيد.',
+    color: 'from-[#0b1a2e] to-[#2f4a6b]',
+  },
+  {
+    slug: 'night-blue',
+    name: 'Night Blue',
+    nameAr: 'نايت بلو',
+    mainCategory: 'marques',
+    description:
+      'Référence Night Blue en cours de référencement. Prix, format et disponibilité à confirmer.',
+    descriptionAr: 'مرجع نايت بلو قيد التوفير. السعر والحجم والتوفّر قيد التأكيد.',
+    color: 'from-[#0a1220] to-[#1f3a5f]',
+  },
+]
+
 /** Chips used by the collection filter. `Tous` is intentionally gender-neutral. */
 export const genderFilters = ['Tous', 'Homme', 'Femme'] as const
 
@@ -549,7 +656,18 @@ export function countByFamily(family: ScentFamily) {
   return products.filter((product) => product.category === family).length
 }
 
+/** Verified products belonging to one universe, in catalogue order. */
+export function getProductsByMainCategory(mainCategory: MainCategoryId): Product[] {
+  return products.filter((product) => product.mainCategory === mainCategory)
+}
+
+/** Unverified, inquiry-only entries belonging to one universe. */
+export function getUpcomingProducts(mainCategory: MainCategoryId): UpcomingProduct[] {
+  return upcomingProducts.filter((entry) => entry.mainCategory === mainCategory)
+}
+
 export type CatalogQuery = {
+  mainCategory?: MainCategoryId
   gender?: GenderFilter
   family?: FamilyFilter
   query?: string
@@ -560,15 +678,38 @@ export type CatalogQuery = {
  * count. The haystack spans both languages so a shopper can search in Arabic or
  * Latin regardless of the active locale.
  */
-export function filterProducts({ gender, family, query }: CatalogQuery): Product[] {
+export function filterProducts({
+  mainCategory,
+  gender,
+  family,
+  query,
+}: CatalogQuery): Product[] {
   const needle = query?.trim().toLowerCase() ?? ''
 
   return products.filter((product) => {
+    if (mainCategory && product.mainCategory !== mainCategory) return false
     if (gender && gender !== 'Tous' && product.gender !== gender) return false
     if (family && family !== 'Toutes' && product.category !== family) return false
     if (!needle) return true
 
-    const haystack = `${product.name} ${product.nameAr} ${product.notes} ${product.notesAr} ${product.category}`
+    const haystack = `${product.name} ${product.nameAr} ${product.brand ?? ''} ${product.notes} ${product.notesAr} ${product.category}`
     return haystack.toLowerCase().includes(needle)
   })
+}
+
+/**
+ * Search over the unverified entries of one universe. They have no notes or
+ * family, so the haystack is just the two names.
+ */
+export function filterUpcomingProducts(
+  mainCategory: MainCategoryId,
+  query: string,
+): UpcomingProduct[] {
+  const entries = getUpcomingProducts(mainCategory)
+  const needle = query.trim().toLowerCase()
+  if (!needle) return entries
+
+  return entries.filter((entry) =>
+    `${entry.name} ${entry.nameAr}`.toLowerCase().includes(needle),
+  )
 }

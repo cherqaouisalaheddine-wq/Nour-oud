@@ -14,13 +14,10 @@ import {
   productDescription as productDescriptionBase,
   productName as productNameBase,
   productNotes as productNotesBase,
+  type DescriptionCopy,
+  type NameCopy,
+  type NotesCopy,
 } from '@/lib/i18n/product'
-import type { Product } from '@/lib/products'
-
-type ProductCopy = Pick<
-  Product,
-  'name' | 'nameAr' | 'notes' | 'notesAr' | 'description' | 'descriptionAr'
->
 
 type I18nValue = {
   locale: Locale
@@ -28,10 +25,10 @@ type I18nValue = {
   isRtl: boolean
   dict: Dictionary
   formatPrice: (amount: number) => string
-  productName: (product: ProductCopy) => string
-  productAltName: (product: ProductCopy) => string
-  productNotes: (product: ProductCopy) => string
-  productDescription: (product: ProductCopy) => string
+  productName: (product: NameCopy) => string
+  productAltName: (product: NameCopy) => string
+  productNotes: (product: NotesCopy) => string
+  productDescription: (product: DescriptionCopy) => string
 }
 
 const I18nContext = createContext<I18nValue | null>(null)

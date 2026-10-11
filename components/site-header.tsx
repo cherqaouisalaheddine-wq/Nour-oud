@@ -2,10 +2,25 @@
 
 import { Menu, Search, ShoppingBag, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { navItems } from '@/lib/site'
+import { localePath, type Locale } from '@/lib/i18n/config'
+import { navItems, type NavItem } from '@/lib/site'
+import { categoryPath } from '@/lib/categories'
 import { useCart } from '@/components/cart/cart-provider'
 import { useI18n } from '@/components/i18n/locale-provider'
 import { LanguageOptions, LanguageSwitcher } from '@/components/i18n/language-switcher'
+
+/**
+ * Every nav entry resolves to a locale-prefixed URL.
+ *
+ * A bare `#collection` only works while the visitor is already on the homepage;
+ * prefixing the locale makes the same link work from a category page too, and
+ * the browser still treats it as a same-document jump when the path matches.
+ */
+function navHref(item: NavItem, locale: Locale) {
+  return 'categoryId' in item
+    ? categoryPath(locale, item.categoryId)
+    : `${localePath(locale)}${item.href}`
+}
 
 type SiteHeaderProps = {
   query: string
@@ -80,7 +95,7 @@ export function SiteHeader({
             )}
           </button>
 
-          <a href="#accueil" className="flex items-center gap-3">
+          <a href={localePath(locale)} className="flex items-center gap-3">
             <span
               aria-hidden="true"
               className="flex size-9 items-center justify-center border border-[var(--champagne)] text-[0.6875rem] tracking-[0.1em] text-[var(--champagne)]"
@@ -101,12 +116,12 @@ export function SiteHeader({
           </a>
 
           {/* Desktop navigation */}
-          <nav className="hidden items-center gap-7 lg:flex" aria-label={dict.nav.ariaPrimary}>
+          <nav className="hidden items-center gap-5 lg:flex xl:gap-7" aria-label={dict.nav.ariaPrimary}>
             {navItems.map((item) => (
               <a
                 key={item.key}
-                href={item.href}
-                className="group relative py-2 text-[0.6875rem] font-medium tracking-[0.14em] uppercase"
+                href={navHref(item, locale)}
+                className="group relative py-2 text-[0.6875rem] font-medium tracking-[0.14em] whitespace-nowrap uppercase"
               >
                 {dict.nav.items[item.key]}
                 <span
@@ -202,29 +217,41 @@ export function SiteHeader({
           }`}
         >
           <ul className="flex flex-col">
-            {navItems.map((item, index) => (
-              <li key={item.key} className="border-b border-[var(--hairline)]">
-                <a
-                  href={item.href}
-                  tabIndex={mobileMenu ? 0 : -1}
-                  onClick={() => setMobileMenu(false)}
-                  className="flex items-baseline gap-4 py-4"
-                >
-                  <span className="w-6 text-[0.5625rem] tracking-[0.14em] text-[var(--champagne)] tabular-nums">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
-                  <span className="font-[family-name:var(--font-display)] text-2xl">
-                    {dict.nav.items[item.key]}
-                  </span>
-                </a>
-              </li>
-            ))}
+            {navItems.map((item, index) => {
+              // Category entries show their full, official name in the menu;
+              // the long wording wraps instead of overflowing a narrow phone.
+              const isCategory = 'categoryId' in item
+              const label = isCategory
+                ? dict.univers.items[item.categoryId].name
+                : dict.nav.items[item.key]
+              return (
+                <li key={item.key} className="border-b border-[var(--hairline)]">
+                  <a
+                    href={navHref(item, locale)}
+                    tabIndex={mobileMenu ? 0 : -1}
+                    onClick={() => setMobileMenu(false)}
+                    className="flex items-baseline gap-4 py-4"
+                  >
+                    <span className="w-6 shrink-0 text-[0.5625rem] tracking-[0.14em] text-[var(--champagne)] tabular-nums">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <span
+                      className={`min-w-0 font-[family-name:var(--font-display)] ${
+                        isCategory ? 'text-xl leading-snug sm:text-2xl' : 'text-2xl'
+                      }`}
+                    >
+                      {label}
+                    </span>
+                  </a>
+                </li>
+              )
+            })}
           </ul>
 
           <LanguageOptions className="mt-6" />
 
           <a
-            href="#newsletter"
+            href={`${localePath(locale)}#newsletter`}
             tabIndex={mobileMenu ? 0 : -1}
             onClick={() => setMobileMenu(false)}
             className="btn-ink mt-6 w-full"

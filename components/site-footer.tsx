@@ -1,6 +1,7 @@
 'use client'
 
 import { Mail, MessageCircle } from 'lucide-react'
+import { localePath } from '@/lib/i18n/config'
 import { siteConfig } from '@/lib/site'
 import { useI18n } from '@/components/i18n/locale-provider'
 
@@ -27,8 +28,16 @@ function FacebookGlyph(props: React.SVGProps<SVGSVGElement>) {
 }
 
 export function SiteFooter() {
-  const { dict } = useI18n()
+  const { dict, locale } = useI18n()
   const year = new Date().getFullYear()
+
+  /*
+   * Footer links are locale-relative: anchors (`#collection`) and category
+   * paths (`/categories/…`) both need the `/fr` | `/ar` prefix so they keep
+   * working from a category page. External URLs are left untouched.
+   */
+  const localHref = (href: string) =>
+    href.startsWith('#') || href.startsWith('/') ? `${localePath(locale)}${href}` : href
 
   const socialLinks = [
     { label: 'Instagram', href: siteConfig.social.instagram, Icon: InstagramGlyph },
@@ -83,7 +92,7 @@ export function SiteFooter() {
                 {column.links.map((link) => (
                   <li key={link.label}>
                     <a
-                      href={link.href}
+                      href={localHref(link.href)}
                       className="text-sm text-[var(--bone)]/60 transition-colors duration-400 hover:text-[var(--bone)]"
                     >
                       {link.label}
@@ -130,10 +139,10 @@ export function SiteFooter() {
             {dict.footer.copyright(year)}
           </p>
           <div className="flex gap-6 text-xs text-[var(--bone)]/45">
-            <a href="#collection" className="transition-colors hover:text-[var(--bone)]">
+            <a href={localHref('#collection')} className="transition-colors hover:text-[var(--bone)]">
               {dict.footer.terms}
             </a>
-            <a href="#collection" className="transition-colors hover:text-[var(--bone)]">
+            <a href={localHref('#collection')} className="transition-colors hover:text-[var(--bone)]">
               {dict.footer.privacy}
             </a>
             <span className="tracking-[0.14em] uppercase">{dict.brand.origin}</span>

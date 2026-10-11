@@ -38,11 +38,14 @@ export const fr = {
     newsCta: 'Recevoir nos nouveautés',
     items: {
       home: 'Accueil',
+      // Concise on purpose: the full category names ("Parfums Orientaux & Oud",
+      // "Parfums de Marque & Autres Fragrances") are shown on the homepage cards,
+      // in the mobile menu and as each page's title, where there is room.
+      oriental: 'Orientaux',
+      designer: 'Marques',
       collections: 'Collections',
       men: 'Homme',
       women: 'Femme',
-      unisex: 'Unisex',
-      oud: 'Oud',
       about: 'À propos',
     },
   },
@@ -158,12 +161,61 @@ export const fr = {
     },
   },
 
+  /**
+   * The two top-level universes shown as large cards on the homepage and used
+   * as the hero copy of each listing page.
+   */
+  univers: {
+    eyebrow: 'Nos univers',
+    title: 'Deux univers, une même exigence',
+    subtitle:
+      'Des oud et des ambrées de la maison aux grandes signatures internationales : choisissez le territoire qui vous ressemble.',
+    discover: 'Découvrir',
+    items: {
+      orientaux: {
+        eyebrow: 'Orient · Oud · Ambre',
+        name: 'Parfums Orientaux & Oud',
+        tagline: 'Oud, ambre, musc et compositions arabes, sélectionnés pour leur tenue.',
+        description:
+          'Oud, ambre, musc et compositions arabes : les parfums qui font la signature de la maison. Des bois fumés aux ambrées lumineuses, chaque flacon est choisi pour sa tenue et sa noblesse.',
+        metaTitle: 'Parfums Orientaux & Oud | NOUR EL OUD',
+        metaDescription:
+          'Découvrez notre collection de parfums orientaux et d’oud : oud, ambre, musc et compositions arabes. Livraison partout au Maroc, paiement à la livraison.',
+      },
+      marques: {
+        eyebrow: 'Marques internationales',
+        name: 'Parfums de Marque & Autres Fragrances',
+        tagline: 'Prada, Afnan 9PM, Night Blue et d’autres signatures contemporaines.',
+        description:
+          'Prada, Afnan 9PM, Night Blue et d’autres grandes signatures contemporaines. Ces références sont en cours de référencement : nous les publions dès que le prix et la disponibilité sont confirmés par nos fournisseurs.',
+        metaTitle: 'Parfums de Marque & Autres Fragrances | NOUR EL OUD',
+        metaDescription:
+          'Prada, Afnan 9PM, Night Blue et d’autres signatures contemporaines chez NOUR EL OUD. Renseignez-vous sur la disponibilité et le prix par WhatsApp.',
+      },
+    },
+  },
+
+  /** Copy specific to the universe listing pages. */
+  category: {
+    eyebrow: 'Catégorie',
+    breadcrumbHome: 'Accueil',
+    backToCollection: 'Voir toute la collection',
+    upcoming: {
+      eyebrow: 'Bientôt disponibles',
+      title: 'Références à confirmer',
+      badge: 'Informations à confirmer',
+      priceOnRequest: 'Prix sur demande',
+      note:
+        'Nous référençons actuellement ces fragrances. Prix, format et disponibilité seront publiés dès qu’ils seront confirmés par nos fournisseurs. Écrivez-nous pour en savoir plus.',
+      inquire: 'Se renseigner',
+    },
+  },
+
   bestsellers: {
     eyebrow: 'Les plus commandés',
     title: 'Best-sellers',
     cta: 'Voir toute la collection',
   },
-
   promo: {
     eyebrow: 'Édition limitée',
     title: 'Oud Royale',
@@ -254,11 +306,11 @@ export const fr = {
       {
         title: 'Collections',
         links: [
+          { label: 'Parfums Orientaux & Oud', href: '/categories/parfums-orientaux-oud' },
+          { label: 'Parfums de Marque & Autres', href: '/categories/parfums-de-marque' },
           { label: 'Tous les parfums', href: '#collection' },
           { label: 'Parfums Homme', href: '#collection?genre=Homme' },
           { label: 'Parfums Femme', href: '#collection?genre=Femme' },
-          { label: 'Oud', href: '#categories' },
-          { label: 'Ambre', href: '#categories' },
           { label: 'Bestsellers', href: '#bestsellers' },
         ],
       },
@@ -381,6 +433,10 @@ export const fr = {
     newsletter: (email: string) =>
       whatsappLink(
         `Bonjour, je souhaite m’inscrire à la lettre d’information NOUR EL OUD.\n\nMon email : ${email.trim()}`,
+      ),
+    inquire: (productName: string) =>
+      whatsappLink(
+        `Salam, je souhaite des informations sur ${productName} : prix, format et disponibilité.`,
       ),
     advice: whatsappLink(
       'Bonjour, je voudrais des conseils pour choisir un parfum.',

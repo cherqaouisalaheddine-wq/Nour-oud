@@ -3,12 +3,12 @@
 import { useEffect, useState } from 'react'
 import type { FamilyFilter, GenderFilter, Product } from '@/lib/products'
 import type { Locale } from '@/lib/i18n/config'
-import { LocaleProvider } from '@/components/i18n/locale-provider'
-import { CartProvider } from '@/components/cart/cart-provider'
+import { StorefrontProviders } from '@/components/storefront-providers'
 import { CartDrawer } from '@/components/cart/cart-drawer'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { Hero } from '@/components/hero'
+import { MainCategories } from '@/components/main-categories'
 import { CollectionGrid } from '@/components/collection-grid'
 import { BrandStory } from '@/components/brand-story'
 import { CategoryGrid } from '@/components/category-grid'
@@ -43,7 +43,8 @@ function Storefront() {
    */
   useEffect(() => {
     function applyDeepLinkFilters() {
-      const hashQuery = window.location.hash.split('?')[1]
+      const fragment = window.location.hash.slice(1)
+      const [target, hashQuery] = fragment.split('?')
       const params = new URLSearchParams(hashQuery ?? window.location.search)
 
       const requestedGender = params.get('genre')
@@ -59,6 +60,17 @@ function Storefront() {
         requestedFamily === 'Floral'
       ) {
         setFamily(requestedFamily)
+      }
+
+      /*
+       * A fragment like `#collection?genre=Homme` does not match any element id,
+       * so the browser refuses to scroll to it. When it arrives from another
+       * page (a category page, a footer link) the visitor would otherwise land
+       * at the top. Scroll manually only in that case, so a plain `#accueil`
+       * still uses the browser's native anchor behaviour.
+       */
+      if (hashQuery && target) {
+        document.getElementById(target)?.scrollIntoView()
       }
     }
 
@@ -78,6 +90,7 @@ function Storefront() {
 
       <main>
         <Hero />
+        <MainCategories />
         <CollectionGrid
           gender={gender}
           onGenderChange={setGender}
@@ -105,10 +118,8 @@ function Storefront() {
 
 export function PerfumeStorefront({ locale }: { locale: Locale }) {
   return (
-    <LocaleProvider locale={locale}>
-      <CartProvider>
-        <Storefront />
-      </CartProvider>
-    </LocaleProvider>
+    <StorefrontProviders locale={locale}>
+      <Storefront />
+    </StorefrontProviders>
   )
 }
