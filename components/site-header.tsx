@@ -24,16 +24,16 @@ function navHref(item: NavItem, locale: Locale) {
 }
 
 type SiteHeaderProps = {
-  query: string
-  onQueryChange: (value: string) => void
-  searchOpen: boolean
-  onSearchToggle: () => void
+  query?: string
+  onQueryChange?: (value: string) => void
+  searchOpen?: boolean
+  onSearchToggle?: () => void
 }
 
 export function SiteHeader({
-  query,
+  query = '',
   onQueryChange,
-  searchOpen,
+  searchOpen = false,
   onSearchToggle,
 }: SiteHeaderProps) {
   const [mobileMenu, setMobileMenu] = useState(false)
@@ -148,15 +148,17 @@ export function SiteHeader({
           <div className="flex items-center gap-1">
             <LanguageSwitcher className="hidden sm:block" />
 
-            <button
-              type="button"
-              onClick={onSearchToggle}
-              aria-label={dict.header.searchAria}
-              aria-expanded={searchOpen}
-              className="flex size-11 items-center justify-center transition-colors hover:text-[var(--champagne)]"
-            >
-              <Search className="size-5" strokeWidth={1.5} />
-            </button>
+            {onSearchToggle && (
+              <button
+                type="button"
+                onClick={onSearchToggle}
+                aria-label={dict.header.searchAria}
+                aria-expanded={searchOpen}
+                className="flex size-11 items-center justify-center transition-colors hover:text-[var(--champagne)]"
+              >
+                <Search className="size-5" strokeWidth={1.5} />
+              </button>
+            )}
 
             <button
               type="button"
@@ -175,33 +177,35 @@ export function SiteHeader({
           </div>
         </div>
 
-        {/* Search field */}
-        <div
-          className={`overflow-hidden border-t border-[var(--hairline)] transition-[max-height,opacity] duration-500 ${
-            searchOpen ? 'max-h-24 opacity-100' : 'max-h-0 opacity-0'
-          }`}
-          aria-hidden={!searchOpen}
-        >
-          <div className="mx-auto flex max-w-7xl items-center gap-3 px-5 py-3 lg:px-8">
-            <Search
-              className="size-4 shrink-0 text-[var(--ink-muted)]"
-              strokeWidth={1.5}
-              aria-hidden="true"
-            />
-            <label htmlFor="catalogue-search" className="sr-only">
-              {dict.header.searchLabel}
-            </label>
-            <input
-              id="catalogue-search"
-              type="search"
-              value={query}
-              onChange={(event) => onQueryChange(event.target.value)}
-              placeholder={dict.header.searchPlaceholder}
-              tabIndex={searchOpen ? 0 : -1}
-              className="w-full bg-transparent py-2 text-sm outline-none placeholder:text-[var(--ink-muted)]"
-            />
+        {/* Search field. Pages without a catalogue (a product fiche) omit it. */}
+        {onQueryChange && (
+          <div
+            className={`overflow-hidden border-t border-[var(--hairline)] transition-[max-height,opacity] duration-500 ${
+              searchOpen ? 'max-h-24 opacity-100' : 'max-h-0 opacity-0'
+            }`}
+            aria-hidden={!searchOpen}
+          >
+            <div className="mx-auto flex max-w-7xl items-center gap-3 px-5 py-3 lg:px-8">
+              <Search
+                className="size-4 shrink-0 text-[var(--ink-muted)]"
+                strokeWidth={1.5}
+                aria-hidden="true"
+              />
+              <label htmlFor="catalogue-search" className="sr-only">
+                {dict.header.searchLabel}
+              </label>
+              <input
+                id="catalogue-search"
+                type="search"
+                value={query}
+                onChange={(event) => onQueryChange(event.target.value)}
+                placeholder={dict.header.searchPlaceholder}
+                tabIndex={searchOpen ? 0 : -1}
+                className="w-full bg-transparent py-2 text-sm outline-none placeholder:text-[var(--ink-muted)]"
+              />
+            </div>
           </div>
-        </div>
+        )}
       </header>
 
       {/* Mobile navigation panel */}

@@ -387,7 +387,65 @@ export const fr = {
     addAria: (name: string) => `Ajouter ${name} au panier`,
     add: 'Ajouter',
     added: 'Ajouté',
-    details: 'Détails',
+    quickView: 'Aperçu',
+    viewPage: 'Voir la fiche',
+  },
+
+  /**
+   * Product fiche copy. The same fiche serves verified bottles and inquiry-only
+   * references; the `notesPending`, `priceOnRequest` and `referenceNotice`
+   * entries let a reference stay honest without inventing a specification.
+   */
+  productPage: {
+    breadcrumbAria: 'Fil d’Ariane',
+    galleryLabel: 'Galerie du parfum',
+    zoomHint: 'Agrandir',
+    zoomAria: (name: string) => `Agrandir la photo de ${name}`,
+    zoomCloseAria: 'Fermer l’aperçu',
+    thumbnailAria: (index: number, name: string) => `Voir la photo ${index} de ${name}`,
+    imageAlt: (name: string) => `Flacon du parfum ${name}`,
+    descriptionTitle: 'Description',
+    notesTitle: 'Notes olfactives',
+    notesTop: 'Notes de tête',
+    notesHeart: 'Notes de cœur',
+    notesBase: 'Notes de fond',
+    notesPending: 'Composition détaillée à confirmer auprès de notre équipe.',
+    characteristicsTitle: 'Caractéristiques',
+    similarTitle: 'Produits similaires',
+    similarEmpty: 'Aucune recommandation pour le moment.',
+    labels: {
+      brand: 'Marque',
+      maison: 'NOUR EL OUD',
+      family: 'Famille olfactive',
+      gender: 'Genre',
+      concentration: 'Concentration',
+      size: 'Contenance',
+      reference: 'Référence',
+      availability: 'Disponibilité',
+    },
+    concentration: {
+      'Eau de Parfum': 'Eau de Parfum',
+      'Eau de Toilette': 'Eau de Toilette',
+      Parfum: 'Parfum',
+    },
+    availability: {
+      available: 'Disponible',
+      inStock: (count: number) => `En stock · ${count} pièce${count > 1 ? 's' : ''}`,
+      outOfStock: 'Rupture de stock',
+      onRequest: 'Sur demande',
+    },
+    quantityLabel: 'Quantité',
+    decrease: 'Diminuer la quantité',
+    increase: 'Augmenter la quantité',
+    addToCart: 'Ajouter au panier',
+    added: 'Ajouté au panier',
+    viewCart: 'Voir le panier',
+    orderWhatsApp: 'Commander sur WhatsApp',
+    priceOnRequest: 'Prix sur demande',
+    referenceNotice:
+      'Cette référence est en cours de référencement. Prix, contenance et disponibilité seront publiés dès qu’ils seront confirmés par nos fournisseurs.',
+    inquire: 'Se renseigner',
+    reviewsSuffix: (count: number) => `${count} avis`,
   },
 
   filters: {

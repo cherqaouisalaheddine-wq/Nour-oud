@@ -81,6 +81,11 @@ export function categoryPath(locale: Locale, id: CategoryId): string {
   return `${localePath(locale)}/categories/${categoryMeta[id].slug}`
 }
 
+/** The listing page a catalogue line belongs to, used by the fiche breadcrumb. */
+export function categoryIdForRange(range: RangeId): CategoryId {
+  return range === 'marques' ? 'parfums-de-marque' : 'parfums-arabes-oud'
+}
+
 /** The catalogue slice a category restricts to. */
 export function categoryScope(id: CategoryId): Scope {
   const meta = categoryMeta[id]

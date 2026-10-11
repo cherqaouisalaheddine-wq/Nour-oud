@@ -4,22 +4,28 @@ import { Check, Plus, Star } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import type { Product } from '@/lib/products'
 import type { ProductTagKey } from '@/lib/site'
+import { productPath } from '@/lib/product-url'
 import { useCart } from '@/components/cart/cart-provider'
 import { useI18n } from '@/components/i18n/locale-provider'
 
 type ProductCardProps = {
   product: Product
-  onView: (product: Product) => void
+  /**
+   * Opens the quick view. Optional: on a fiche, where the equivalent rail has no
+   * dialog mounted, the secondary action becomes a plain link to the fiche.
+   */
+  onView?: (product: Product) => void
   /** Slightly tighter type for the bestseller rail. */
   compact?: boolean
 }
 
 /**
- * Product card used by the featured collection and the best-sellers rail.
+ * Product card used by the featured collection, the best-sellers rail and the
+ * recommendations on a fiche.
  *
- * The whole card is a button that opens the quick view. The add button and the
- * card button are siblings, not nested, so there is no interactive element
- * inside another.
+ * The photograph and the title both link to the product fiche. The add button
+ * and the secondary action are siblings, not nested, so there is no interactive
+ * element inside another.
  */
 export function ProductCard({ product, onView, compact = false }: ProductCardProps) {
   const { add } = useCart()
@@ -28,6 +34,7 @@ export function ProductCard({ product, onView, compact = false }: ProductCardPro
 
   const name = productName(product)
   const tag = dict.tags[product.tag as ProductTagKey] ?? product.tag
+  const href = productPath(locale, product.slug)
 
   useEffect(() => {
     if (!justAdded) return
@@ -42,9 +49,8 @@ export function ProductCard({ product, onView, compact = false }: ProductCardPro
 
   return (
     <article className="group relative flex flex-col">
-      <button
-        type="button"
-        onClick={() => onView(product)}
+      <a
+        href={href}
         className="relative block aspect-4/5 w-full cursor-pointer overflow-hidden bg-[var(--bone-deep)] text-start"
         aria-label={dict.product.viewAria(name)}
       >
@@ -62,7 +68,7 @@ export function ProductCard({ product, onView, compact = false }: ProductCardPro
         <span className="absolute top-3 start-3 bg-[var(--bone)]/92 px-2.5 py-1 text-[0.5625rem] font-medium tracking-[0.16em] uppercase backdrop-blur-sm">
           {tag}
         </span>
-      </button>
+      </a>
 
       <div className="flex flex-1 flex-col pt-4">
         <div className="flex items-start justify-between gap-3">
@@ -70,14 +76,13 @@ export function ProductCard({ product, onView, compact = false }: ProductCardPro
             <h3
               className={`truncate font-[family-name:var(--font-display)] leading-tight ${compact ? 'text-xl' : 'text-2xl'}`}
             >
-              <button
-                type="button"
-                onClick={() => onView(product)}
+              <a
+                href={href}
                 dir="auto"
-                className="cursor-pointer text-start transition-colors duration-500 hover:text-[var(--champagne)]"
+                className="text-start transition-colors duration-500 hover:text-[var(--champagne)]"
               >
                 {name}
-              </button>
+              </a>
             </h3>
             {/* Keep the original (Latin) perfume name visible in Arabic mode. */}
             {locale === 'ar' && (
@@ -109,7 +114,7 @@ export function ProductCard({ product, onView, compact = false }: ProductCardPro
           <span className="text-xs text-[var(--ink-muted)]">({product.reviews})</span>
         </div>
 
-        {/* Actions sit outside the image button so they stay tappable. */}
+        {/* Actions sit outside the image link so they stay tappable. */}
         <div className="mt-4 flex gap-2">
           <button
             type="button"
@@ -129,13 +134,22 @@ export function ProductCard({ product, onView, compact = false }: ProductCardPro
               </>
             )}
           </button>
-          <button
-            type="button"
-            onClick={() => onView(product)}
-            className="btn-outline min-h-11! px-4! py-2! text-[0.625rem]!"
-          >
-            {dict.product.details}
-          </button>
+          {onView ? (
+            <button
+              type="button"
+              onClick={() => onView(product)}
+              className="btn-outline min-h-11! px-4! py-2! text-[0.625rem]!"
+            >
+              {dict.product.quickView}
+            </button>
+          ) : (
+            <a
+              href={href}
+              className="btn-outline min-h-11! px-4! py-2! text-[0.625rem]!"
+            >
+              {dict.product.viewPage}
+            </a>
+          )}
         </div>
       </div>
     </article>

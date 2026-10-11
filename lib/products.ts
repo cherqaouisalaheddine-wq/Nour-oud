@@ -34,6 +34,20 @@ export type Lineage = (typeof lineageIds)[number]
  */
 export const MAISON_ML = 50
 
+/**
+ * Concentration of the maison's verified flacons. The quick view and the promo
+ * block already state "Eau de Parfum", so it is declared once here. A brand
+ * bottle carries its own value, and a bottle whose concentration has not been
+ * confirmed simply omits the field — the fiche then hides the row rather than
+ * guessing.
+ */
+export const MAISON_CONCENTRATION = 'Eau de Parfum' as const
+
+/** Recognised concentrations. Free text is deliberately not allowed. */
+export const concentrationIds = ['Eau de Parfum', 'Eau de Toilette', 'Parfum'] as const
+
+export type Concentration = (typeof concentrationIds)[number]
+
 /** A fully verified, purchasable catalogue entry. */
 export type Product = {
   slug: string
@@ -68,6 +82,30 @@ export type Product = {
   tag: string
   rating: number
   reviews: number
+  /**
+   * Extra gallery photographs. `image` always leads the gallery and is the shot
+   * used on cards; anything here is appended as an additional view. Omitted when
+   * no further shot has been supplied.
+   */
+  images?: string[]
+  /**
+   * Olfactory pyramid, level by level. Each level is published only when the
+   * supplier has confirmed it; the fiche falls back to the legend `notes` line
+   * (which is always present) and never invents a head/heart/base split.
+   */
+  notesTop?: string
+  notesTopAr?: string
+  notesHeart?: string
+  notesHeartAr?: string
+  notesBase?: string
+  notesBaseAr?: string
+  /** Concentration, published only when confirmed for that bottle. */
+  concentration?: Concentration
+  /**
+   * Units physically available. Omitted means "no stock count is tracked", so
+   * the bottle reads as available and can be ordered, exactly as today.
+   */
+  stock?: number
 }
 
 /**
@@ -616,6 +654,7 @@ export const products: Product[] = [
     range: 'arabes-oud' as const,
     lineage: 'arabe' as const,
     size: MAISON_ML,
+    concentration: MAISON_CONCENTRATION,
   })),
   ...designerProducts.map((product) => ({ ...product, range: 'marques' as const })),
 ]
@@ -754,6 +793,70 @@ export const bestsellerSlugs = [
   'qasas-hudson',
   'lailat-al-arab',
 ] as const
+
+/**
+ * Every catalogue slug that has its own fiche, verified bottles and
+ * inquiry-only references alike. Drives the product route's static params.
+ */
+export const catalogueSlugs: string[] = [
+  ...products.map((product) => product.slug),
+  ...upcomingProducts.map((entry) => entry.slug),
+]
+
+/** Resolves a fiche URL segment to a verified product, if one exists. */
+export function getProductBySlug(slug: string): Product | undefined {
+  return products.find((product) => product.slug === slug)
+}
+
+/** Resolves a fiche URL segment to an inquiry-only reference, if one exists. */
+export function getUpcomingBySlug(slug: string): UpcomingProduct | undefined {
+  return upcomingProducts.find((entry) => entry.slug === slug)
+}
+
+/**
+ * Ordered gallery for a fiche: the card photograph first, then any extra shots.
+ * Duplicates are dropped so the same file listed twice never renders twice.
+ */
+export function productGallery(product: Product): string[] {
+  return [product.image, ...(product.images ?? [])].filter(
+    (src, index, all) => all.indexOf(src) === index,
+  )
+}
+
+/**
+ * Recommendations for a product fiche. Candidates are scored so the closest
+ * matches lead — same confirmed brand, then the same olfactory family, then the
+ * same catalogue line and audience. Products with no point of contact with the
+ * current bottle are left out rather than padding the rail at random.
+ */
+export function getSimilarProducts(product: Product, limit = 4): Product[] {
+  return products
+    .filter((candidate) => candidate.slug !== product.slug)
+    .map((candidate) => ({
+      candidate,
+      score:
+        (candidate.brand && product.brand && candidate.brand === product.brand ? 8 : 0) +
+        (candidate.category === product.category ? 4 : 0) +
+        (candidate.range === product.range ? 3 : 0) +
+        (candidate.gender === product.gender ? 2 : 0),
+    }))
+    .filter((entry) => entry.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map((entry) => entry.candidate)
+}
+
+/** Sibling references shown on an inquiry-only fiche, same line first. */
+export function getSimilarReferences(entry: UpcomingProduct, limit = 4): UpcomingProduct[] {
+  const score = (candidate: UpcomingProduct) =>
+    (candidate.range === entry.range ? 1 : 0) +
+    (candidate.gender && candidate.gender === entry.gender ? 1 : 0)
+
+  return upcomingProducts
+    .filter((candidate) => candidate.slug !== entry.slug)
+    .sort((a, b) => score(b) - score(a))
+    .slice(0, limit)
+}
 
 /** Resolves slugs to products, silently dropping unknown ones. */
 export function getProductsBySlugs(slugs: readonly string[]): Product[] {

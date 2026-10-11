@@ -4,6 +4,7 @@ import { Check, MessageCircle, Plus, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import type { Product } from '@/lib/products'
 import type { ProductTagKey } from '@/lib/site'
+import { productPath } from '@/lib/product-url'
 import { useCart } from '@/components/cart/cart-provider'
 import { useI18n } from '@/components/i18n/locale-provider'
 
@@ -18,7 +19,7 @@ type QuickViewProps = {
  */
 export function QuickView({ product, onClose }: QuickViewProps) {
   const { add, open } = useCart()
-  const { dict, formatPrice, productName, productAltName, productNotes, productDescription } =
+  const { dict, locale, formatPrice, productName, productAltName, productNotes, productDescription } =
     useI18n()
   const [justAdded, setJustAdded] = useState(false)
   const closeRef = useRef<HTMLButtonElement>(null)
@@ -190,6 +191,15 @@ export function QuickView({ product, onClose }: QuickViewProps) {
             >
               <MessageCircle className="size-4" strokeWidth={1.5} aria-hidden="true" />
               {dict.quickview.orderWhatsApp}
+            </a>
+
+            {/* The fiche carries the full detail (gallery, notes, specs). */}
+            <a
+              href={productPath(locale, product.slug)}
+              onClick={onClose}
+              className="btn-outline w-full"
+            >
+              {dict.product.viewPage}
             </a>
           </div>
         </div>
