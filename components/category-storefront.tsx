@@ -1,20 +1,20 @@
 'use client'
 
 import type { Locale } from '@/lib/i18n/config'
-import type { MainCategoryId } from '@/lib/products'
+import type { CategoryId } from '@/lib/categories'
 import { StorefrontProviders } from '@/components/storefront-providers'
 import { CategoryScreen } from '@/components/category-screen'
 
 /**
  * Client entry point for a category page, mounted by the route with the locale
- * and the universe already validated on the server.
+ * and the category already validated on the server.
  */
 export function CategoryStorefront({
   locale,
   categoryId,
 }: {
   locale: Locale
-  categoryId: MainCategoryId
+  categoryId: CategoryId
 }) {
   return (
     <StorefrontProviders locale={locale}>

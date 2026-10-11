@@ -101,7 +101,8 @@ export function QuickView({ product, onClose }: QuickViewProps) {
         <div className="flex flex-col justify-center gap-5 p-6 sm:p-10">
           <div>
             <p className="eyebrow">
-              {dict.filters.family[product.category]} · {dict.filters.gender[product.gender]}
+              {dict.filters.lineage[product.lineage]} · {dict.filters.family[product.category]} ·{' '}
+              {dict.filters.gender[product.gender]}
             </p>
             <h2
               id="quickview-title"
@@ -116,7 +117,7 @@ export function QuickView({ product, onClose }: QuickViewProps) {
           </div>
 
           <dl className="grid grid-cols-2 gap-x-4 gap-y-3 border-y border-[var(--hairline)] py-5 text-sm">
-            <div>
+            <div className="col-span-2">
               <dt className="text-[0.625rem] tracking-[0.16em] uppercase text-[var(--ink-muted)]">
                 {dict.quickview.notesLabel}
               </dt>
@@ -127,6 +128,14 @@ export function QuickView({ product, onClose }: QuickViewProps) {
                 {dict.quickview.concentrationLabel}
               </dt>
               <dd className="mt-1">{dict.quickview.concentrationValue}</dd>
+            </div>
+            <div>
+              <dt className="text-[0.625rem] tracking-[0.16em] uppercase text-[var(--ink-muted)]">
+                {dict.quickview.sizeLabel}
+              </dt>
+              <dd className="mt-1">
+                {product.size} {dict.units.ml}
+              </dd>
             </div>
           </dl>
 

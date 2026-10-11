@@ -1,33 +1,95 @@
 import { localePath, type Locale } from '@/lib/i18n/config'
-import { mainCategoryIds, type MainCategoryId } from '@/lib/products'
+import {
+  getProducts,
+  type Gender,
+  type RangeId,
+  type Scope,
+} from '@/lib/products'
 
 /**
- * Presentation for the two top-level universes.
+ * Catalogue organisation.
  *
- * Display names, taglines and SEO copy are translated in the dictionaries; this
- * module only holds what is identical in both languages: the URL segment and the
- * decorative artwork. Segments are kept in Latin so a shared link stays valid no
- * matter which language the visitor is reading.
+ * The shop is split two ways, and the two axes cross each other:
+ *
+ * - **Audience** — `homme` / `femme`, the primary entry points on the homepage.
+ * - **Range**   — `arabes-oud` / `marques`, the two catalogue lines.
+ *
+ * A product carries both a `gender` and a `range`, so `/categories/homme`
+ * lists every masculine fragrance and `/categories/parfums-arabes-oud` lists
+ * every Arabic & oud fragrance. Display names live in the dictionaries; this
+ * module only holds the URL segment and the decorative artwork, both of which
+ * are identical in French and Arabic (segments stay Latin so a shared link
+ * never breaks when the reader switches language).
  */
-export const mainCategoryMeta: Record<MainCategoryId, { slug: string; image: string }> = {
-  orientaux: {
-    slug: 'parfums-orientaux-oud',
+
+export const audienceIds = ['homme', 'femme'] as const
+export type AudienceId = (typeof audienceIds)[number]
+
+export const categoryIds = [
+  'homme',
+  'femme',
+  'parfums-arabes-oud',
+  'parfums-de-marque',
+] as const
+export type CategoryId = (typeof categoryIds)[number]
+
+type CategoryMeta =
+  | { kind: 'audience'; slug: string; audience: AudienceId; image: string }
+  | { kind: 'range'; slug: string; range: RangeId; image: string }
+
+export const categoryMeta: Record<CategoryId, CategoryMeta> = {
+  homme: {
+    kind: 'audience',
+    slug: 'homme',
+    audience: 'homme',
     image: '/products/sheikh-zayed-oud.jpg',
   },
-  marques: {
+  femme: {
+    kind: 'audience',
+    slug: 'femme',
+    audience: 'femme',
+    image: '/products/lailat-al-arab.jpg',
+  },
+  'parfums-arabes-oud': {
+    kind: 'range',
+    slug: 'parfums-arabes-oud',
+    range: 'arabes-oud',
+    image: '/products/manasik-oud-amber-noir.jpg',
+  },
+  'parfums-de-marque': {
+    kind: 'range',
     slug: 'parfums-de-marque',
-    // Brand-level artwork for the universe card: a generic flacon, deliberately
-    // not attached to any named fragrance.
+    range: 'marques',
+    // Brand-level artwork: a generic flacon, deliberately not attached to any
+    // named fragrance.
     image: '/oud-hero.png',
   },
 }
 
-/** Resolves a URL segment back to its universe, or `undefined` when unknown. */
-export function findCategoryBySlug(slug: string): MainCategoryId | undefined {
-  return mainCategoryIds.find((id) => mainCategoryMeta[id].slug === slug)
+export const audienceGenders: Record<AudienceId, Gender> = {
+  homme: 'Homme',
+  femme: 'Femme',
 }
 
-/** Absolute, locale-aware link to a universe listing page. */
-export function categoryPath(locale: Locale, id: MainCategoryId): string {
-  return `${localePath(locale)}/categories/${mainCategoryMeta[id].slug}`
+/** Resolves a URL segment back to its category, or `undefined` when unknown. */
+export function findCategoryBySlug(slug: string): CategoryId | undefined {
+  return categoryIds.find((id) => categoryMeta[id].slug === slug)
+}
+
+/** Absolute, locale-aware link to a category listing page. */
+export function categoryPath(locale: Locale, id: CategoryId): string {
+  return `${localePath(locale)}/categories/${categoryMeta[id].slug}`
+}
+
+/** The catalogue slice a category restricts to. */
+export function categoryScope(id: CategoryId): Scope {
+  const meta = categoryMeta[id]
+  return meta.kind === 'range'
+    ? { range: meta.range }
+    : { gender: audienceGenders[meta.audience] }
+}
+
+/** Verified, purchasable products of a category, in catalogue order. */
+export function productsForCategory(id: CategoryId) {
+  return getProducts(categoryScope(id))
 }

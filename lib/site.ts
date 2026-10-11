@@ -1,4 +1,4 @@
-import type { MainCategoryId, ScentFamily } from '@/lib/products'
+import type { CategoryId } from '@/lib/categories'
 
 /**
  * Non-translatable brand configuration.
@@ -30,72 +30,26 @@ export function whatsappLink(message: string) {
 /**
  * Header navigation structure.
  *
- * Two kinds of entry: a `categoryId` opens a universe listing page (the link is
+ * Two kinds of entry: a `categoryId` opens a category listing page (the link is
  * built per locale by the header), while `href` is an in-page anchor on the
  * homepage. The header prefixes anchors with the active locale so they also work
- * from a category page. Labels resolve from `dict.nav.items[key]`.
+ * from a category page. Short desktop labels resolve from `dict.nav.short[key]`,
+ * full names from `dict.nav.items[key]`.
  */
 export type NavItem =
   | { key: NavKey; href: string }
-  | { key: NavKey; categoryId: MainCategoryId }
+  | { key: NavKey; categoryId: CategoryId }
 
-export type NavKey =
-  | 'home'
-  | 'oriental'
-  | 'designer'
-  | 'collections'
-  | 'men'
-  | 'women'
-  | 'about'
+export type NavKey = 'home' | 'men' | 'women' | 'oriental' | 'designer' | 'contact'
 
 export const navItems: readonly NavItem[] = [
   { key: 'home', href: '#accueil' },
-  { key: 'oriental', categoryId: 'orientaux' },
-  { key: 'designer', categoryId: 'marques' },
-  { key: 'collections', href: '#collection' },
-  { key: 'men', href: '#collection?genre=Homme' },
-  { key: 'women', href: '#collection?genre=Femme' },
-  { key: 'about', href: '#histoire' },
+  { key: 'men', categoryId: 'homme' },
+  { key: 'women', categoryId: 'femme' },
+  { key: 'oriental', categoryId: 'parfums-arabes-oud' },
+  { key: 'designer', categoryId: 'parfums-de-marque' },
+  { key: 'contact', href: '#contact' },
 ]
-
-/**
- * Large visual category cards. Imagery, availability and the deep-link target
- * stay here; the eyebrow/title/description come from `dict.categories.items`.
- */
-export const categoryMeta = [
-  {
-    slug: 'homme',
-    image: '/products/sheikh-zayed-oud.jpg',
-    href: '#collection?genre=Homme',
-    available: true,
-  },
-  {
-    slug: 'femme',
-    image: '/products/lailat-al-arab.jpg',
-    href: '#collection?genre=Femme',
-    available: true,
-  },
-  {
-    slug: 'oud',
-    image: '/products/manasik-oud-amber-noir.jpg',
-    href: '#collection?family=Oud',
-    available: true,
-  },
-  {
-    slug: 'unisex',
-    image: '/products/manasik-oud-amber-bleu.jpg',
-    href: '#collection',
-    available: false,
-  },
-  {
-    slug: 'coffrets',
-    image: '/products/makhsouse-oud.jpg',
-    href: '#collection',
-    available: false,
-  },
-] as const
-
-export type CategorySlug = (typeof categoryMeta)[number]['slug']
 
 /** "Why us" tiles: the glyph is fixed, the copy is translated. */
 export const benefitMeta = [
@@ -151,50 +105,3 @@ export type ProductTagKey =
   | 'Classique'
   | 'Prestige'
   | 'Puissant'
-
-/* -------------------------------------------------------------------------- */
-/* Legacy data                                                                */
-/* -------------------------------------------------------------------------- */
-
-/**
- * Olfactory-family blurbs. Kept for reference but not rendered by any current
- * section - the storefront presents families through `categoryMeta` and the
- * collection filters instead.
- */
-export type ScentFamilyMeta = {
-  name: ScentFamily
-  tagline: string
-  description: string
-  gradient: string
-}
-
-export const scentFamilies: ScentFamilyMeta[] = [
-  {
-    name: 'Oud',
-    tagline: 'Le roi des parfums',
-    description:
-      "Bois d'agar fumé, cuir et épices. La famille la plus profonde et la plus tenace de la maison.",
-    gradient: 'from-[#1a1410] via-[#4a3025] to-[#a9783a]',
-  },
-  {
-    name: 'Ambre',
-    tagline: 'Chaleur enveloppante',
-    description:
-      'Ambre suifé, miel et cuir. Des parfums doux et lumineux qui restent toute la journée.',
-    gradient: 'from-[#5d2b19] via-[#9a5a2c] to-[#d8953b]',
-  },
-  {
-    name: 'Musc',
-    tagline: 'Proche de la peau',
-    description:
-      'Musc blanc, fleurs blanches et ambre pâle. La simplicité élégante, parfaite au quotidien.',
-    gradient: 'from-[#e9e0d1] via-[#cbbfa8] to-[#8d6e55]',
-  },
-  {
-    name: 'Floral',
-    tagline: 'Fleurit aujourd’hui',
-    description:
-      'Rose de Damas, jasmin sambac et touches fruitées. Des bouquets frais et ombrés.',
-    gradient: 'from-[#62664d] via-[#a08a63] to-[#d1c791]',
-  },
-]

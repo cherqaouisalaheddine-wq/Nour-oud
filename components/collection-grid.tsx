@@ -1,9 +1,10 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { SearchX } from 'lucide-react'
-import type { FamilyFilter, GenderFilter, Product, ScentFamily } from '@/lib/products'
-import { countByFamily, familyFilters, filterProducts, genderFilters } from '@/lib/products'
+import type { FamilyFilter, GenderFilter, PriceBand, Product, ScentFamily } from '@/lib/products'
+import { countByFamily, filterProducts } from '@/lib/products'
+import { CatalogFilters } from '@/components/catalog-filters'
 import { ProductCard } from '@/components/product-card'
 import { Reveal } from '@/components/reveal'
 import { useI18n } from '@/components/i18n/locale-provider'
@@ -20,6 +21,15 @@ type CollectionGridProps = {
 /** Family counters exclude the 'Toutes' pseudo-filter. */
 const FAMILY_COUNTS: ScentFamily[] = ['Oud', 'Ambre', 'Musc', 'Floral']
 
+/**
+ * The homepage's full verified catalogue.
+ *
+ * Gender, olfactory family and price all route through `filterProducts`, so the
+ * result count can never disagree with the grid. Brand and availability
+ * selectors are deliberately absent here: the homepage shows only the maison's
+ * own line, which carries no brand and is always in stock — those two filters
+ * live on the category pages, where they have something to act on.
+ */
 export function CollectionGrid({
   gender,
   onGenderChange,
@@ -29,12 +39,19 @@ export function CollectionGrid({
   onView,
 }: CollectionGridProps) {
   const { dict } = useI18n()
+  const [priceBand, setPriceBand] = useState<PriceBand>('all')
 
   // Shared entry point so the result count can never disagree with the grid.
   const results = useMemo(
-    () => filterProducts({ gender, family, query }),
-    [gender, family, query],
+    () => filterProducts({ gender, family, priceBand, query }),
+    [gender, family, priceBand, query],
   )
+
+  function resetFilters() {
+    onGenderChange('Tous')
+    onFamilyChange('Toutes')
+    setPriceBand('all')
+  }
 
   return (
     <section id="collection" className="bg-[var(--bone)] px-5 py-20 lg:px-8 lg:py-28">
@@ -56,75 +73,37 @@ export function CollectionGrid({
 
         {/* Filters */}
         <Reveal delay={100}>
-          <div className="mt-10 flex flex-col gap-4 border-y border-[var(--hairline)] py-5 lg:flex-row lg:items-center lg:justify-between">
-            <div
-              className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1"
-              role="group"
-              aria-label={dict.collection.genderAria}
-            >
-              {genderFilters.map((option) => (
-                <button
-                  key={option}
-                  type="button"
-                  onClick={() => onGenderChange(option)}
-                  aria-pressed={gender === option}
-                  className={`shrink-0 border px-5 py-2.5 text-[0.6875rem] font-medium tracking-[0.12em] uppercase transition-colors duration-400 ${
-                    gender === option
-                      ? 'border-[var(--ink)] bg-[var(--ink)] text-[var(--bone)]'
-                      : 'border-[var(--hairline)] hover:border-[var(--ink)]'
-                  }`}
-                >
-                  {dict.filters.gender[option]}
-                </button>
-              ))}
-            </div>
-
-            <div
-              className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1"
-              role="group"
-              aria-label={dict.collection.familyAria}
-            >
-              {familyFilters.map((option) => (
-                <button
-                  key={option}
-                  type="button"
-                  onClick={() => onFamilyChange(option)}
-                  aria-pressed={family === option}
-                  className={`shrink-0 px-4 py-2 text-xs tracking-wide transition-colors duration-400 ${
-                    family === option
-                      ? 'text-[var(--ink)] underline decoration-[var(--champagne)] decoration-2 underline-offset-[6px]'
-                      : 'text-[var(--ink-muted)] hover:text-[var(--ink)]'
-                  }`}
-                >
-                  {dict.filters.family[option]}
-                </button>
-              ))}
-            </div>
+          <div className="mt-10">
+            <CatalogFilters
+              gender={{ value: gender, onChange: onGenderChange }}
+              family={{ value: family, onChange: onFamilyChange }}
+              priceBand={{ value: priceBand, onChange: setPriceBand }}
+            />
           </div>
         </Reveal>
 
         {/* Result count, announced politely for screen readers. */}
-        <p className="mt-6 text-xs tracking-[0.14em] uppercase text-[var(--ink-muted)]" aria-live="polite">
+        <p
+          className="mt-6 text-xs tracking-[0.14em] uppercase text-[var(--ink-muted)]"
+          aria-live="polite"
+        >
           {dict.collection.results(results.length, query || undefined)}
         </p>
 
         {results.length === 0 ? (
           <div className="flex flex-col items-center justify-center border border-dashed border-[var(--hairline-strong)] px-6 py-24 text-center">
-            <SearchX className="size-9 text-[var(--hairline-strong)]" strokeWidth={1} aria-hidden="true" />
+            <SearchX
+              className="size-9 text-[var(--hairline-strong)]"
+              strokeWidth={1}
+              aria-hidden="true"
+            />
             <p className="mt-6 font-[family-name:var(--font-display)] text-2xl">
               {dict.collection.emptyTitle}
             </p>
             <p className="mt-2 max-w-sm text-sm leading-relaxed text-[var(--ink-muted)]">
               {dict.collection.emptyText}
             </p>
-            <button
-              type="button"
-              onClick={() => {
-                onGenderChange('Tous')
-                onFamilyChange('Toutes')
-              }}
-              className="btn-outline mt-8"
-            >
+            <button type="button" onClick={resetFilters} className="btn-outline mt-8">
               {dict.collection.reset}
             </button>
           </div>

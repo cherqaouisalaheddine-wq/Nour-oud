@@ -38,15 +38,22 @@ export const fr = {
     newsCta: 'Recevoir nos nouveautés',
     items: {
       home: 'Accueil',
-      // Concise on purpose: the full category names ("Parfums Orientaux & Oud",
-      // "Parfums de Marque & Autres Fragrances") are shown on the homepage cards,
-      // in the mobile menu and as each page's title, where there is room.
-      oriental: 'Orientaux',
-      designer: 'Marques',
-      collections: 'Collections',
       men: 'Homme',
       women: 'Femme',
-      about: 'À propos',
+      oriental: 'Parfums Arabes & Oud',
+      designer: 'Parfums de Marque',
+      contact: 'Contact',
+    },
+    // Shorter wording for the desktop bar, where the two full category names
+    // would overflow at 1024px. The full names are used from `xl` up and in the
+    // mobile menu.
+    short: {
+      home: 'Accueil',
+      men: 'Homme',
+      women: 'Femme',
+      oriental: 'Arabes & Oud',
+      designer: 'Marques',
+      contact: 'Contact',
     },
   },
 
@@ -121,92 +128,98 @@ export const fr = {
     imageAlt: 'Flacon Makhsouse Oud, pièce signature de la maison NOUR EL OUD',
   },
 
-  categories: {
-    eyebrow: 'Explorer',
-    title: 'Par famille',
-    subtitle: 'Chaque famille olfactive a sa propre température. Trouvez la vôtre.',
-    comingSoon: 'Bientôt disponible',
-    viewCollection: 'Voir la collection',
+  /**
+   * The two audiences, shown as the primary cards on the homepage and used as
+   * the hero copy of `/categories/homme` and `/categories/femme`.
+   */
+  audience: {
+    eyebrow: 'Explorez',
+    title: 'Pour lui, pour elle',
+    subtitle:
+      'Chaque univers réunit les parfums arabes & oud et les parfums de marque de la même audience.',
+    discover: 'Découvrir',
     items: {
       homme: {
         eyebrow: 'Pour lui',
-        name: 'Parfums Homme',
+        name: 'Homme',
+        tagline: 'Oud fumé, ambre massif et cuir : la collection masculine.',
         description:
-          'Oud fumé, ambre massif et cuir. Des compositions structurées pour une présence qui ne demande pas confirmation.',
+          'Toutes les fragrances masculines de la maison, réunies en deux gammes : les parfums arabes & oud et les parfums de marque.',
+        metaTitle: 'Parfums Homme | NOUR EL OUD',
+        metaDescription:
+          'Découvrez tous les parfums pour homme de NOUR EL OUD : parfums arabes & oud et parfums de marque. Livraison partout au Maroc, paiement à la livraison.',
       },
       femme: {
         eyebrow: 'Pour elle',
-        name: 'Parfums Femme',
+        name: 'Femme',
+        tagline: 'Rose, ambre et musc : la collection féminine.',
         description:
-          'Rose de Damas, ambre suifé et musc blanc. Des floralisations chaudes qui tiennent jusqu’au bout de la nuit.',
-      },
-      oud: {
-        eyebrow: 'Le roi des parfums',
-        name: 'Oud',
-        description:
-          'Bois d’agar fumé, la famille la plus profonde et la plus tenace de la maison. Notre signature.',
-      },
-      unisex: {
-        eyebrow: 'Bientôt disponible',
-        name: 'Unisex',
-        description:
-          'Des compositions partagées, pensées pour n’appartenir à personne. Ouverture prochaine.',
-      },
-      coffrets: {
-        eyebrow: 'Bientôt disponible',
-        name: 'Coffrets',
-        description:
-          'Coffrets découverte et éditions cadeaux, assemblés à la main à Casablanca. Bientôt disponible.',
+          'Toutes les fragrances féminines de la maison, réunies en deux gammes : les parfums arabes & oud et les parfums de marque.',
+        metaTitle: 'Parfums Femme | NOUR EL OUD',
+        metaDescription:
+          'Découvrez tous les parfums pour femme de NOUR EL OUD : parfums arabes & oud et parfums de marque. Livraison partout au Maroc, paiement à la livraison.',
       },
     },
   },
 
   /**
-   * The two top-level universes shown as large cards on the homepage and used
-   * as the hero copy of each listing page.
+   * The two catalogue lines, shown as cards on the homepage and used as the
+   * hero copy of `/categories/parfums-arabes-oud` and `/categories/parfums-de-marque`.
    */
-  univers: {
-    eyebrow: 'Nos univers',
-    title: 'Deux univers, une même exigence',
+  ranges: {
+    eyebrow: 'Nos gammes',
+    title: 'Deux gammes, une même exigence',
     subtitle:
-      'Des oud et des ambrées de la maison aux grandes signatures internationales : choisissez le territoire qui vous ressemble.',
+      'Des oud et des ambrées de la maison aux signatures internationales, chaque flacon est présenté avec sa vraie nature.',
     discover: 'Découvrir',
     items: {
-      orientaux: {
+      'arabes-oud': {
         eyebrow: 'Orient · Oud · Ambre',
-        name: 'Parfums Orientaux & Oud',
+        name: 'Parfums Arabes & Oud',
         tagline: 'Oud, ambre, musc et compositions arabes, sélectionnés pour leur tenue.',
         description:
           'Oud, ambre, musc et compositions arabes : les parfums qui font la signature de la maison. Des bois fumés aux ambrées lumineuses, chaque flacon est choisi pour sa tenue et sa noblesse.',
-        metaTitle: 'Parfums Orientaux & Oud | NOUR EL OUD',
+        metaTitle: 'Parfums Arabes & Oud | NOUR EL OUD',
         metaDescription:
-          'Découvrez notre collection de parfums orientaux et d’oud : oud, ambre, musc et compositions arabes. Livraison partout au Maroc, paiement à la livraison.',
+          'Découvrez notre collection de parfums arabes et d’oud : oud, ambre, musc et compositions arabes. Livraison partout au Maroc, paiement à la livraison.',
       },
       marques: {
-        eyebrow: 'Marques internationales',
-        name: 'Parfums de Marque & Autres Fragrances',
-        tagline: 'Prada, Afnan 9PM, Night Blue et d’autres signatures contemporaines.',
+        eyebrow: 'Marques & inspirations',
+        name: 'Parfums de Marque',
+        tagline: 'Grandes signatures internationales et interprétations olfactives.',
         description:
-          'Prada, Afnan 9PM, Night Blue et d’autres grandes signatures contemporaines. Ces références sont en cours de référencement : nous les publions dès que le prix et la disponibilité sont confirmés par nos fournisseurs.',
-        metaTitle: 'Parfums de Marque & Autres Fragrances | NOUR EL OUD',
+          'Les grandes signatures internationales et leurs interprétations olfactives, clairement identifiées sur chaque fiche. Chaque référence est publiée avec son prix et sa disponibilité dès qu’ils sont confirmés par nos fournisseurs.',
+        metaTitle: 'Parfums de Marque | NOUR EL OUD',
         metaDescription:
-          'Prada, Afnan 9PM, Night Blue et d’autres signatures contemporaines chez NOUR EL OUD. Renseignez-vous sur la disponibilité et le prix par WhatsApp.',
+          'Parfums de marque et interprétations olfactives des grandes signatures, chez NOUR EL OUD. Renseignez-vous sur la disponibilité et le prix par WhatsApp.',
       },
     },
   },
 
-  /** Copy specific to the universe listing pages. */
+  /** Copy specific to the category listing pages. */
   category: {
     eyebrow: 'Catégorie',
     breadcrumbHome: 'Accueil',
     backToCollection: 'Voir toute la collection',
+    /** Sub-section headings on the audience pages. */
+    sections: {
+      arabesOud: {
+        title: 'Parfums Arabes & Oud',
+        note: 'Oud, ambre, musc et compositions arabes de la maison.',
+      },
+      marques: {
+        title: 'Parfums de Marque',
+        note: 'Grandes signatures internationales et interprétations olfactives.',
+      },
+      empty:
+        'Aucune référence publiée dans cette gamme pour le moment. Écrivez-nous pour connaître la disponibilité.',
+    },
     upcoming: {
-      eyebrow: 'Bientôt disponibles',
+      eyebrow: 'À référencer',
       title: 'Références à confirmer',
-      badge: 'Informations à confirmer',
       priceOnRequest: 'Prix sur demande',
       note:
-        'Nous référençons actuellement ces fragrances. Prix, format et disponibilité seront publiés dès qu’ils seront confirmés par nos fournisseurs. Écrivez-nous pour en savoir plus.',
+        'Ces interprétations olfactives sont en cours de référencement : prix, contenance et disponibilité seront publiés dès qu’ils seront confirmés par nos fournisseurs. Écrivez-nous pour en savoir plus.',
       inquire: 'Se renseigner',
     },
   },
@@ -306,11 +319,11 @@ export const fr = {
       {
         title: 'Collections',
         links: [
-          { label: 'Parfums Orientaux & Oud', href: '/categories/parfums-orientaux-oud' },
-          { label: 'Parfums de Marque & Autres', href: '/categories/parfums-de-marque' },
+          { label: 'Parfums Arabes & Oud', href: '/categories/parfums-arabes-oud' },
+          { label: 'Parfums de Marque', href: '/categories/parfums-de-marque' },
+          { label: 'Parfums Homme', href: '/categories/homme' },
+          { label: 'Parfums Femme', href: '/categories/femme' },
           { label: 'Tous les parfums', href: '#collection' },
-          { label: 'Parfums Homme', href: '#collection?genre=Homme' },
-          { label: 'Parfums Femme', href: '#collection?genre=Femme' },
           { label: 'Bestsellers', href: '#bestsellers' },
         ],
       },
@@ -358,7 +371,8 @@ export const fr = {
     closeAria: 'Fermer les détails',
     notesLabel: 'Notes',
     concentrationLabel: 'Concentration',
-    concentrationValue: 'Eau de Parfum · 50 ml',
+    concentrationValue: 'Eau de Parfum',
+    sizeLabel: 'Contenance',
     reviewCount: (count: number) => `${count} avis`,
     addToCart: 'Ajouter au panier',
     added: 'Ajouté au panier',
@@ -389,6 +403,37 @@ export const fr = {
       Musc: 'Musc',
       Floral: 'Floral',
     },
+    price: {
+      all: 'Tous les prix',
+      lt300: 'Moins de 300 DH',
+      mid: '300 – 400 DH',
+      gt400: 'Plus de 400 DH',
+    },
+    brand: {
+      all: 'Toutes les marques',
+    },
+    availability: {
+      all: 'Toutes',
+      available: 'Disponibles',
+      onrequest: 'Sur demande',
+    },
+    /** Lineage badge shown on every card. */
+    lineage: {
+      arabe: 'Parfum arabe',
+      inspire: 'Inspiré',
+      original: 'Original',
+    },
+    labels: {
+      type: 'Type de parfum',
+      price: 'Prix',
+      brand: 'Marque',
+      availability: 'Disponibilité',
+    },
+  },
+
+  /** Measurement units, appended to a numeric value such as the flacon volume. */
+  units: {
+    ml: 'ml',
   },
 
   tags: {

@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { localePath, type Locale } from '@/lib/i18n/config'
 import { navItems, type NavItem } from '@/lib/site'
 import { categoryPath } from '@/lib/categories'
+import { categoryCopy } from '@/lib/i18n/category-copy'
 import { useCart } from '@/components/cart/cart-provider'
 import { useI18n } from '@/components/i18n/locale-provider'
 import { LanguageOptions, LanguageSwitcher } from '@/components/i18n/language-switcher'
@@ -117,19 +118,31 @@ export function SiteHeader({
 
           {/* Desktop navigation */}
           <nav className="hidden items-center gap-5 lg:flex xl:gap-7" aria-label={dict.nav.ariaPrimary}>
-            {navItems.map((item) => (
-              <a
-                key={item.key}
-                href={navHref(item, locale)}
-                className="group relative py-2 text-[0.6875rem] font-medium tracking-[0.14em] whitespace-nowrap uppercase"
-              >
-                {dict.nav.items[item.key]}
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-[var(--champagne)] transition-transform duration-500 group-hover:scale-x-100 rtl:origin-right"
-                />
-              </a>
-            ))}
+            {navItems.map((item) => {
+              /*
+               * The two catalogue-line names are long. The abbreviated label
+               * keeps the bar inside 1024px; from `xl` up there is room for the
+               * full names, which are also the mobile labels.
+               */
+              const fullLabel =
+                'categoryId' in item
+                  ? categoryCopy(dict, item.categoryId).name
+                  : dict.nav.items[item.key]
+              return (
+                <a
+                  key={item.key}
+                  href={navHref(item, locale)}
+                  className="group relative py-2 text-[0.6875rem] font-medium tracking-[0.14em] whitespace-nowrap uppercase"
+                >
+                  <span className="xl:hidden">{dict.nav.short[item.key]}</span>
+                  <span className="hidden xl:inline">{fullLabel}</span>
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-[var(--champagne)] transition-transform duration-500 group-hover:scale-x-100 rtl:origin-right"
+                  />
+                </a>
+              )
+            })}
           </nav>
 
           <div className="flex items-center gap-1">
@@ -222,7 +235,7 @@ export function SiteHeader({
               // the long wording wraps instead of overflowing a narrow phone.
               const isCategory = 'categoryId' in item
               const label = isCategory
-                ? dict.univers.items[item.categoryId].name
+                ? categoryCopy(dict, item.categoryId).name
                 : dict.nav.items[item.key]
               return (
                 <li key={item.key} className="border-b border-[var(--hairline)]">

@@ -1,46 +1,57 @@
 'use client'
 
 import { ArrowUpRight } from 'lucide-react'
-import { mainCategoryIds } from '@/lib/products'
-import { categoryPath, mainCategoryMeta } from '@/lib/categories'
+import {
+  categoryMeta,
+  categoryPath,
+  type AudienceId,
+  type CategoryId,
+} from '@/lib/categories'
 import { Reveal } from '@/components/reveal'
 import { useI18n } from '@/components/i18n/locale-provider'
 
+/** Audience card id paired with its dictionary key, kept in sync by the type. */
+const cards: { id: CategoryId; key: AudienceId }[] = [
+  { id: 'homme', key: 'homme' },
+  { id: 'femme', key: 'femme' },
+]
+
 /**
- * The two top-level universes as large editorial cards.
+ * The two audience cards (Homme / Femme).
  *
- * These are the primary entry points into the catalogue: each one links to its
- * own listing page, so the homepage no longer relies on a single mixed grid.
+ * These are the primary entry points into the catalogue: each one opens its own
+ * listing page, where the shopper then chooses between the Arabic & oud and the
+ * brand lines.
  */
-export function MainCategories() {
+export function AudienceCategories() {
   const { dict, locale } = useI18n()
 
   return (
-    <section id="univers" className="bg-[var(--bone-deep)] px-5 py-20 lg:px-8 lg:py-28">
+    <section id="categories" className="bg-[var(--bone-deep)] px-5 py-20 lg:px-8 lg:py-28">
       <div className="mx-auto max-w-7xl">
         <Reveal>
           <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
             <div>
-              <p className="eyebrow">{dict.univers.eyebrow}</p>
-              <h2 className="section-title mt-4">{dict.univers.title}</h2>
+              <p className="eyebrow">{dict.audience.eyebrow}</p>
+              <h2 className="section-title mt-4">{dict.audience.title}</h2>
             </div>
             <p className="max-w-xs text-sm leading-relaxed text-[var(--ink-muted)]">
-              {dict.univers.subtitle}
+              {dict.audience.subtitle}
             </p>
           </div>
         </Reveal>
 
         <div className="mt-12 grid grid-cols-1 gap-4 lg:grid-cols-2">
-          {mainCategoryIds.map((id, index) => {
-            const copy = dict.univers.items[id]
+          {cards.map((card, index) => {
+            const copy = dict.audience.items[card.key]
             return (
-              <Reveal key={id} delay={index * 90}>
+              <Reveal key={card.id} delay={index * 90}>
                 <a
-                  href={categoryPath(locale, id)}
+                  href={categoryPath(locale, card.id)}
                   className="group relative block aspect-4/5 overflow-hidden bg-[var(--ink)] sm:aspect-[16/11]"
                 >
                   <img
-                    src={mainCategoryMeta[id].image}
+                    src={categoryMeta[card.id].image}
                     alt=""
                     loading="lazy"
                     aria-hidden="true"
@@ -63,7 +74,7 @@ export function MainCategories() {
                     </p>
 
                     <span className="mt-6 inline-flex items-center gap-2 border border-[var(--champagne)]/70 px-5 py-3 text-[0.625rem] tracking-[0.16em] uppercase text-[var(--champagne)] transition-colors duration-500 group-hover:bg-[var(--champagne)] group-hover:text-[var(--ink)]">
-                      {dict.univers.discover}
+                      {dict.audience.discover}
                       <ArrowUpRight
                         className="size-3.5 transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-1 rtl:-scale-x-100 rtl:group-hover:-translate-x-1"
                         strokeWidth={1.5}

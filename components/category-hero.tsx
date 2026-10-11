@@ -1,7 +1,7 @@
 'use client'
 
-import { getProductsByMainCategory, type MainCategoryId } from '@/lib/products'
-import { mainCategoryMeta } from '@/lib/categories'
+import { categoryMeta, productsForCategory, type CategoryId } from '@/lib/categories'
+import { categoryCopy } from '@/lib/i18n/category-copy'
 import { localePath } from '@/lib/i18n/config'
 import { useI18n } from '@/components/i18n/locale-provider'
 
@@ -10,12 +10,14 @@ import { useI18n } from '@/components/i18n/locale-provider'
  *
  * Kept on the ivory ground rather than the dark hero treatment: the header is
  * transparent at the top of the page, so a light band keeps the wordmark and
- * nav readable while the dark flacon photograph sits in its own frame.
+ * nav readable while the dark flacon photograph sits in its own frame. The copy
+ * and the count are resolved from the category, so audience pages and range
+ * pages render identically.
  */
-export function CategoryHero({ categoryId }: { categoryId: MainCategoryId }) {
+export function CategoryHero({ categoryId }: { categoryId: CategoryId }) {
   const { dict, locale } = useI18n()
-  const copy = dict.univers.items[categoryId]
-  const count = getProductsByMainCategory(categoryId).length
+  const copy = categoryCopy(dict, categoryId)
+  const count = productsForCategory(categoryId).length
 
   return (
     <section className="bg-[var(--bone-deep)] px-5 pt-24 pb-14 lg:px-8 lg:pt-28 lg:pb-20">
@@ -36,7 +38,7 @@ export function CategoryHero({ categoryId }: { categoryId: MainCategoryId }) {
 
         <div className="mt-10 grid gap-10 lg:grid-cols-[1.35fr_1fr] lg:items-end">
           <div>
-            <p className="eyebrow">{dict.category.eyebrow}</p>
+            <p className="eyebrow">{copy.eyebrow}</p>
             <h1 className="section-title mt-4 max-w-xl">{copy.name}</h1>
             <p className="mt-6 max-w-xl text-sm leading-relaxed text-[var(--ink-muted)]">
               {copy.description}
@@ -59,7 +61,7 @@ export function CategoryHero({ categoryId }: { categoryId: MainCategoryId }) {
 
           <div className="relative aspect-[4/3] overflow-hidden bg-[var(--ink)] lg:aspect-[4/5]">
             <img
-              src={mainCategoryMeta[categoryId].image}
+              src={categoryMeta[categoryId].image}
               alt=""
               aria-hidden="true"
               className="size-full object-cover"

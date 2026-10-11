@@ -1,46 +1,68 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import type { FamilyFilter, GenderFilter, MainCategoryId, Product } from '@/lib/products'
-import {
-  filterUpcomingProducts,
-  getProductsByMainCategory,
-  getUpcomingProducts,
-} from '@/lib/products'
+import type { Product } from '@/lib/products'
+import { audienceGenders, categoryMeta, type CategoryId } from '@/lib/categories'
 import { CartDrawer } from '@/components/cart/cart-drawer'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { QuickView } from '@/components/product-quickview'
 import { CategoryHero } from '@/components/category-hero'
-import { CategoryBrowser } from '@/components/category-browser'
-import { CategoryUpcoming } from '@/components/category-upcoming'
+import { CategoryResults, type ResultsSection } from '@/components/category-results'
+import { useI18n } from '@/components/i18n/locale-provider'
 
 /**
  * Composition root for a category listing page.
  *
  * Mirrors `PerfumeStorefront` (same header, cart drawer and quick view) but the
- * catalogue is scoped to one universe. The header search box filters the page,
- * exactly as it does on the homepage.
+ * catalogue is scoped to one category. An audience page (Homme / Femme) is
+ * split into its two catalogue lines, each with its own heading and grid; a
+ * range page (Arabic & oud / Brand) is a single block with an audience
+ * selector. The header search box filters the page, exactly as it does on the
+ * homepage.
  */
-export function CategoryScreen({ categoryId }: { categoryId: MainCategoryId }) {
-  const [gender, setGender] = useState<GenderFilter>('Tous')
-  const [family, setFamily] = useState<FamilyFilter>('Toutes')
+export function CategoryScreen({ categoryId }: { categoryId: CategoryId }) {
+  const { dict } = useI18n()
   const [query, setQuery] = useState('')
   const [searchOpen, setSearchOpen] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
 
-  const hasAvailable = getProductsByMainCategory(categoryId).length > 0
-  const upcomingTotal = getUpcomingProducts(categoryId).length
-  const upcoming = useMemo(
-    () => filterUpcomingProducts(categoryId, query),
-    [categoryId, query],
-  )
+  const meta = categoryMeta[categoryId]
 
-  function resetFilters() {
-    setGender('Tous')
-    setFamily('Toutes')
-    setQuery('')
-  }
+  const sections = useMemo<ResultsSection[]>(() => {
+    if (meta.kind === 'range') {
+      // The brand line is entirely inquiry-only at the moment, so it gets a
+      // heading that states as much. The maison line's own hero already covers
+      // it, so that page needs no second title.
+      return [
+        {
+          key: meta.range,
+          eyebrow: meta.range === 'marques' ? dict.category.upcoming.eyebrow : undefined,
+          title: meta.range === 'marques' ? dict.category.upcoming.title : undefined,
+          scope: { range: meta.range },
+        },
+      ]
+    }
+
+    const gender = audienceGenders[meta.audience]
+    return [
+      {
+        key: 'arabes-oud',
+        title: dict.category.sections.arabesOud.title,
+        note: dict.category.sections.arabesOud.note,
+        scope: { range: 'arabes-oud', gender },
+      },
+      {
+        key: 'marques',
+        title: dict.category.sections.marques.title,
+        note: dict.category.sections.marques.note,
+        scope: { range: 'marques', gender },
+        // The line is kept visible even with nothing in it, so the section
+        // explains itself rather than silently disappearing.
+        alwaysShow: true,
+      },
+    ]
+  }, [meta, dict])
 
   return (
     <div className="min-h-screen bg-[var(--bone)]">
@@ -54,20 +76,13 @@ export function CategoryScreen({ categoryId }: { categoryId: MainCategoryId }) {
       <main>
         <CategoryHero categoryId={categoryId} />
 
-        {hasAvailable && (
-          <CategoryBrowser
-            categoryId={categoryId}
-            gender={gender}
-            onGenderChange={setGender}
-            family={family}
-            onFamilyChange={setFamily}
-            query={query}
-            onReset={resetFilters}
-            onView={setSelectedProduct}
-          />
-        )}
-
-        <CategoryUpcoming entries={upcoming} total={upcomingTotal} />
+        <CategoryResults
+          sections={sections}
+          query={query}
+          onView={setSelectedProduct}
+          onReset={() => setQuery('')}
+          showGender={meta.kind === 'range'}
+        />
       </main>
 
       <SiteFooter />

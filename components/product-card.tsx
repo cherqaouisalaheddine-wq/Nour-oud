@@ -89,7 +89,11 @@ export function ProductCard({ product, onView, compact = false }: ProductCardPro
               </p>
             )}
             <p className="mt-1 truncate text-[0.6875rem] tracking-wide text-[var(--ink-muted)]">
-              {dict.filters.family[product.category]} · {dict.filters.gender[product.gender]}
+              {dict.filters.family[product.category]} · {dict.filters.gender[product.gender]} ·{' '}
+              {product.size} {dict.units.ml}
+            </p>
+            <p className="mt-1.5 inline-block border border-[var(--hairline-strong)] px-1.5 py-0.5 text-[0.5625rem] tracking-[0.12em] uppercase text-[var(--champagne)]">
+              {dict.filters.lineage[product.lineage]}
             </p>
           </div>
           <p className="shrink-0 text-sm tabular-nums">{formatPrice(product.price)}</p>

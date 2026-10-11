@@ -8,18 +8,18 @@ import {
   type Locale,
 } from '@/lib/i18n/config'
 import { getDictionary } from '@/lib/i18n/dictionaries'
-import { findCategoryBySlug, mainCategoryMeta } from '@/lib/categories'
-import { mainCategoryIds } from '@/lib/products'
+import { categoryIds, categoryMeta, findCategoryBySlug } from '@/lib/categories'
+import { categoryCopy } from '@/lib/i18n/category-copy'
 import { CategoryStorefront } from '@/components/category-storefront'
 
 /**
- * One listing page per universe, in both languages: `/fr/categories/…` and
+ * One listing page per category, in both languages: `/fr/categories/…` and
  * `/ar/categories/…`. `[lang]` is a root parameter, so the page provides params
  * for it as well as for `[slug]`.
  */
 export function generateStaticParams() {
   return locales.flatMap((lang) =>
-    mainCategoryIds.map((id) => ({ lang, slug: mainCategoryMeta[id].slug })),
+    categoryIds.map((id) => ({ lang, slug: categoryMeta[id].slug })),
   )
 }
 
@@ -36,8 +36,8 @@ export async function generateMetadata({
   const categoryId = findCategoryBySlug(slug)
   if (!categoryId) return {}
 
-  const copy = getDictionary(locale).univers.items[categoryId]
-  const path = `/categories/${mainCategoryMeta[categoryId].slug}`
+  const copy = categoryCopy(getDictionary(locale), categoryId)
+  const path = `/categories/${categoryMeta[categoryId].slug}`
 
   return {
     title: copy.metaTitle,

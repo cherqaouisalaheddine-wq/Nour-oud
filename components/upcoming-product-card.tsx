@@ -10,12 +10,16 @@ import { useI18n } from '@/components/i18n/locale-provider'
  * It mirrors the proportions of `ProductCard` so the two read as a family, but
  * it deliberately shows no price, no rating and no add-to-cart button: the only
  * action is asking about it on WhatsApp. The tile is a gradient with the name
- * set in the display face instead of a photograph we do not have.
+ * set in the display face instead of a photograph we do not have. The badge
+ * states the lineage, so nothing reads as an original bottle by default.
  */
 export function UpcomingProductCard({ entry }: { entry: UpcomingProduct }) {
   const { dict, locale, productName, productAltName, productDescription } = useI18n()
 
   const name = productName(entry)
+  const meta = [entry.brand, entry.gender ? dict.filters.gender[entry.gender] : undefined]
+    .filter(Boolean)
+    .join(' · ')
 
   return (
     <article className="group flex h-full flex-col">
@@ -23,7 +27,7 @@ export function UpcomingProductCard({ entry }: { entry: UpcomingProduct }) {
         className={`relative flex aspect-4/5 w-full items-end overflow-hidden bg-gradient-to-br p-6 ${entry.color}`}
       >
         <span className="absolute top-3 start-3 border border-[var(--champagne)]/70 px-2.5 py-1 text-[0.5rem] font-medium tracking-[0.18em] uppercase text-[var(--champagne)]">
-          {dict.category.upcoming.badge}
+          {dict.filters.lineage[entry.lineage]}
         </span>
 
         <h3
@@ -40,6 +44,10 @@ export function UpcomingProductCard({ entry }: { entry: UpcomingProduct }) {
           <p dir="ltr" className="truncate text-[0.6875rem] tracking-wide text-[var(--ink-muted)]">
             {productAltName(entry)}
           </p>
+        )}
+
+        {meta && (
+          <p className="truncate text-[0.6875rem] tracking-wide text-[var(--ink-muted)]">{meta}</p>
         )}
 
         <div className="flex items-start justify-between gap-3">

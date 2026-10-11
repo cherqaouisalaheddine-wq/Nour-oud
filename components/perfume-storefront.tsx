@@ -8,10 +8,10 @@ import { CartDrawer } from '@/components/cart/cart-drawer'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { Hero } from '@/components/hero'
-import { MainCategories } from '@/components/main-categories'
+import { AudienceCategories } from '@/components/audience-categories'
+import { RangeCategories } from '@/components/range-categories'
 import { CollectionGrid } from '@/components/collection-grid'
 import { BrandStory } from '@/components/brand-story'
-import { CategoryGrid } from '@/components/category-grid'
 import { BestSellers } from '@/components/best-sellers'
 import { PromoBanner } from '@/components/promo-banner'
 import { WhyNourElOud } from '@/components/why-nour-el-oud'
@@ -90,7 +90,7 @@ function Storefront() {
 
       <main>
         <Hero />
-        <MainCategories />
+        <AudienceCategories />
         <CollectionGrid
           gender={gender}
           onGenderChange={setGender}
@@ -99,8 +99,8 @@ function Storefront() {
           query={query}
           onView={setSelectedProduct}
         />
+        <RangeCategories />
         <BrandStory />
-        <CategoryGrid />
         <BestSellers onView={setSelectedProduct} />
         <PromoBanner />
         <WhyNourElOud />
