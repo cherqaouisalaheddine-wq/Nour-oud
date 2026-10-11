@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import type { FamilyFilter, GenderFilter, Product } from '@/lib/products'
+import type { Locale } from '@/lib/i18n/config'
+import { LocaleProvider } from '@/components/i18n/locale-provider'
 import { CartProvider } from '@/components/cart/cart-provider'
 import { CartDrawer } from '@/components/cart/cart-drawer'
 import { SiteHeader } from '@/components/site-header'
@@ -34,26 +36,35 @@ function Storefront() {
 
   /*
    * The nav and the category cards deep-link into the collection, e.g.
-   * #collection?family=Oud. Pick those params up once on mount so the link
-   * actually filters the grid instead of scrolling to an unfiltered list.
+   * #collection?family=Oud. Those params live in the fragment, not the query
+   * string, so both are read (the fragment wins when present). The listener
+   * keeps the links working after load and after a language switch, which
+   * navigates to /ar#collection?... while preserving the hash.
    */
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
+    function applyDeepLinkFilters() {
+      const hashQuery = window.location.hash.split('?')[1]
+      const params = new URLSearchParams(hashQuery ?? window.location.search)
 
-    const requestedGender = params.get('genre')
-    if (requestedGender === 'Homme' || requestedGender === 'Femme') {
-      setGender(requestedGender)
+      const requestedGender = params.get('genre')
+      if (requestedGender === 'Homme' || requestedGender === 'Femme') {
+        setGender(requestedGender)
+      }
+
+      const requestedFamily = params.get('family')
+      if (
+        requestedFamily === 'Oud' ||
+        requestedFamily === 'Ambre' ||
+        requestedFamily === 'Musc' ||
+        requestedFamily === 'Floral'
+      ) {
+        setFamily(requestedFamily)
+      }
     }
 
-    const requestedFamily = params.get('family')
-    if (
-      requestedFamily === 'Oud' ||
-      requestedFamily === 'Ambre' ||
-      requestedFamily === 'Musc' ||
-      requestedFamily === 'Floral'
-    ) {
-      setFamily(requestedFamily)
-    }
+    applyDeepLinkFilters()
+    window.addEventListener('hashchange', applyDeepLinkFilters)
+    return () => window.removeEventListener('hashchange', applyDeepLinkFilters)
   }, [])
 
   return (
@@ -92,10 +103,12 @@ function Storefront() {
   )
 }
 
-export function PerfumeStorefront() {
+export function PerfumeStorefront({ locale }: { locale: Locale }) {
   return (
-    <CartProvider>
-      <Storefront />
-    </CartProvider>
+    <LocaleProvider locale={locale}>
+      <CartProvider>
+        <Storefront />
+      </CartProvider>
+    </LocaleProvider>
   )
 }

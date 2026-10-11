@@ -3,8 +3,9 @@
 import { Check, Plus, Star } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import type { Product } from '@/lib/products'
-import { formatPrice } from '@/lib/format'
+import type { ProductTagKey } from '@/lib/site'
 import { useCart } from '@/components/cart/cart-provider'
+import { useI18n } from '@/components/i18n/locale-provider'
 
 type ProductCardProps = {
   product: Product
@@ -22,7 +23,11 @@ type ProductCardProps = {
  */
 export function ProductCard({ product, onView, compact = false }: ProductCardProps) {
   const { add } = useCart()
+  const { dict, locale, formatPrice, productName, productNotes } = useI18n()
   const [justAdded, setJustAdded] = useState(false)
+
+  const name = productName(product)
+  const tag = dict.tags[product.tag as ProductTagKey] ?? product.tag
 
   useEffect(() => {
     if (!justAdded) return
@@ -40,12 +45,12 @@ export function ProductCard({ product, onView, compact = false }: ProductCardPro
       <button
         type="button"
         onClick={() => onView(product)}
-        className="relative block aspect-4/5 w-full cursor-pointer overflow-hidden bg-[var(--bone-deep)] text-left"
-        aria-label={`Voir le parfum ${product.name}`}
+        className="relative block aspect-4/5 w-full cursor-pointer overflow-hidden bg-[var(--bone-deep)] text-start"
+        aria-label={dict.product.viewAria(name)}
       >
         <img
           src={product.image}
-          alt={`Flacon du parfum ${product.name}`}
+          alt={dict.product.imageAlt(name)}
           loading="lazy"
           className="size-full object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06]"
         />
@@ -54,8 +59,8 @@ export function ProductCard({ product, onView, compact = false }: ProductCardPro
           aria-hidden="true"
           className="absolute inset-0 bg-gradient-to-t from-[var(--ink)]/25 via-transparent to-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100"
         />
-        <span className="absolute top-3 left-3 bg-[var(--bone)]/92 px-2.5 py-1 text-[0.5625rem] font-medium tracking-[0.16em] uppercase backdrop-blur-sm">
-          {product.tag}
+        <span className="absolute top-3 start-3 bg-[var(--bone)]/92 px-2.5 py-1 text-[0.5625rem] font-medium tracking-[0.16em] uppercase backdrop-blur-sm">
+          {tag}
         </span>
       </button>
 
@@ -68,20 +73,30 @@ export function ProductCard({ product, onView, compact = false }: ProductCardPro
               <button
                 type="button"
                 onClick={() => onView(product)}
-                className="cursor-pointer text-left transition-colors duration-500 hover:text-[var(--champagne)]"
+                dir="auto"
+                className="cursor-pointer text-start transition-colors duration-500 hover:text-[var(--champagne)]"
               >
-                {product.name}
+                {name}
               </button>
             </h3>
+            {/* Keep the original (Latin) perfume name visible in Arabic mode. */}
+            {locale === 'ar' && (
+              <p
+                dir="ltr"
+                className="mt-0.5 truncate text-[0.6875rem] tracking-wide text-[var(--ink-muted)]"
+              >
+                {product.name}
+              </p>
+            )}
             <p className="mt-1 truncate text-[0.6875rem] tracking-wide text-[var(--ink-muted)]">
-              {product.category} · {product.gender}
+              {dict.filters.family[product.category]} · {dict.filters.gender[product.gender]}
             </p>
           </div>
           <p className="shrink-0 text-sm tabular-nums">{formatPrice(product.price)}</p>
         </div>
 
         <p className="mt-2 text-xs leading-relaxed text-[var(--ink-muted)]">
-          {product.notes}
+          {productNotes(product)}
         </p>
 
         <div className="mt-3 flex items-center gap-1.5">
@@ -96,17 +111,17 @@ export function ProductCard({ product, onView, compact = false }: ProductCardPro
             type="button"
             onClick={handleAdd}
             className="btn-ink flex-1 min-h-11! px-3! py-2! text-[0.625rem]!"
-            aria-label={`Ajouter ${product.name} au panier`}
+            aria-label={dict.product.addAria(name)}
           >
             {justAdded ? (
               <>
                 <Check className="size-3.5" strokeWidth={2} aria-hidden="true" />
-                Ajouté
+                {dict.product.added}
               </>
             ) : (
               <>
                 <Plus className="size-3.5" strokeWidth={1.5} aria-hidden="true" />
-                Ajouter
+                {dict.product.add}
               </>
             )}
           </button>
@@ -115,7 +130,7 @@ export function ProductCard({ product, onView, compact = false }: ProductCardPro
             onClick={() => onView(product)}
             className="btn-outline min-h-11! px-4! py-2! text-[0.625rem]!"
           >
-            Détails
+            {dict.product.details}
           </button>
         </div>
       </div>

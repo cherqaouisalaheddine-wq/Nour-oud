@@ -172,6 +172,44 @@
   }
 }
 
+/*
+ * Arabic typography.
+ *
+ * Arabic is a cursive script: any positive letter-spacing disconnects the
+ * glyphs, so tracking is neutralised wholesale in RTL. Line-height is relaxed
+ * because the Arabic faces render taller ascenders and diacritics than the
+ * Latin ones the layout was tuned for. Overriding the two font tokens here
+ * re-points every `var(--font-display)` / `var(--font-body)` consumer - headings,
+ * `.eyebrow`, buttons and inline utilities - without touching the markup.
+ *
+ * The Arabic subsets are loaded without Latin glyphs, so brand and product names
+ * (NOUR EL OUD, Sheikh Zayed Oud…) keep falling back to Cormorant/Inter and look
+ * identical in both languages.
+ */
+[lang='ar'] {
+  --font-display: var(--font-arabic-display), var(--font-serif),
+    'Cormorant Garamond', Georgia, serif;
+  --font-body: var(--font-arabic-sans), var(--font-sans), 'Inter', system-ui,
+    sans-serif;
+}
+
+[lang='ar'] *,
+[lang='ar'] *::before,
+[lang='ar'] *::after {
+  letter-spacing: normal !important;
+}
+
+[lang='ar'] h1,
+[lang='ar'] h2,
+[lang='ar'] h3,
+[lang='ar'] h4 {
+  line-height: 1.3;
+}
+
+[lang='ar'] .section-title {
+  line-height: 1.25;
+}
+
 @layer components {
   /*
    * Small-caps label. Used above every section heading to give the page a

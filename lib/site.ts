@@ -1,12 +1,19 @@
 import type { ScentFamily } from '@/lib/products'
 
+/**
+ * Non-translatable brand configuration.
+ *
+ * Every human-readable string now lives in `lib/i18n/dictionaries`, so the same
+ * storefront can render in French or Arabic. Only values that are identical in
+ * both languages - brand name, thresholds, ratings, handles, asset paths - stay
+ * here.
+ */
 export const siteConfig = {
   name: 'NOUR EL OUD',
-  tagline: "Parfums d'exception",
-  origin: 'Fait au Maroc',
-  announcement: 'Livraison offerte à partir de 500 DH · Paiement à la livraison',
+  /** Order value (in dirhams) from which shipping is offered. */
   freeShippingThreshold: 500,
   rating: { value: 4.9, count: 1247 },
+  email: 'bonjour@nour-el-oud.ma',
   social: {
     instagram: 'https://instagram.com',
     facebook: 'https://facebook.com',
@@ -20,40 +27,125 @@ export function whatsappLink(message: string) {
   return `https://wa.me/${number}?text=${encodeURIComponent(message)}`
 }
 
-/** Pre-filled order message for a given product. */
-export function orderLink(productName: string) {
-  return whatsappLink(
-    `Salam, je veux commander ${productName}. Merci de me confirmer la disponibilité et la livraison.`,
-  )
-}
-
 /**
- * Pre-fills the WhatsApp order message with the full cart contents.
- * This is the checkout path for the storefront - there is no payment backend.
+ * Header navigation structure. Hrefs are in-page anchors and therefore
+ * language-independent; labels resolve from `dict.nav.items[key]`.
  */
-export function cartOrderLink(
-  lines: { name: string; quantity: number; price: number }[],
-) {
-  const total = lines.reduce((sum, line) => sum + line.price * line.quantity, 0)
-  const detail = lines
-    .map((line) => `• ${line.name} x${line.quantity} — ${line.price * line.quantity} DH`)
-    .join('\n')
-
-  return whatsappLink(
-    `Salam, je souhaite commander :\n${detail}\n\nTotal : ${total} DH\nMerci de me confirmer la disponibilité et la livraison.`,
-  )
-}
-
-export const navigation = [
-  { label: 'Accueil', href: '#accueil' },
-  { label: 'Collections', href: '#collection' },
-  { label: 'Homme', href: '#collection?genre=Homme' },
-  { label: 'Femme', href: '#collection?genre=Femme' },
-  { label: 'Unisex', href: '#categories' },
-  { label: 'Oud', href: '#categories' },
-  { label: 'À propos', href: '#histoire' },
+export const navItems = [
+  { key: 'home', href: '#accueil' },
+  { key: 'collections', href: '#collection' },
+  { key: 'men', href: '#collection?genre=Homme' },
+  { key: 'women', href: '#collection?genre=Femme' },
+  { key: 'unisex', href: '#categories' },
+  { key: 'oud', href: '#categories' },
+  { key: 'about', href: '#histoire' },
 ] as const
 
+export type NavKey = (typeof navItems)[number]['key']
+
+/**
+ * Large visual category cards. Imagery, availability and the deep-link target
+ * stay here; the eyebrow/title/description come from `dict.categories.items`.
+ */
+export const categoryMeta = [
+  {
+    slug: 'homme',
+    image: '/products/sheikh-zayed-oud.jpg',
+    href: '#collection?genre=Homme',
+    available: true,
+  },
+  {
+    slug: 'femme',
+    image: '/products/lailat-al-arab.jpg',
+    href: '#collection?genre=Femme',
+    available: true,
+  },
+  {
+    slug: 'oud',
+    image: '/products/manasik-oud-amber-noir.jpg',
+    href: '#collection?family=Oud',
+    available: true,
+  },
+  {
+    slug: 'unisex',
+    image: '/products/manasik-oud-amber-bleu.jpg',
+    href: '#collection',
+    available: false,
+  },
+  {
+    slug: 'coffrets',
+    image: '/products/makhsouse-oud.jpg',
+    href: '#collection',
+    available: false,
+  },
+] as const
+
+export type CategorySlug = (typeof categoryMeta)[number]['slug']
+
+/** "Why us" tiles: the glyph is fixed, the copy is translated. */
+export const benefitMeta = [
+  { key: 'delivery', icon: 'Truck' },
+  { key: 'payment', icon: 'Wallet' },
+  { key: 'selection', icon: 'ShieldCheck' },
+  { key: 'service', icon: 'MessageCircle' },
+] as const
+
+export type BenefitKey = (typeof benefitMeta)[number]['key']
+
+/** Promo graphic values. The discount and code are literal, copy is translated. */
+export const promoMeta = { discount: '-15%', code: 'OUD15' } as const
+
+/**
+ * PLACEHOLDER CONTENT — NOT FOR PRODUCTION.
+ *
+ * The testimonial text in the dictionaries is written examples, not real
+ * customers. Publishing invented testimonials as social proof is a
+ * consumer-protection problem in most markets, so a visible notice is shown
+ * while this flag is true. Swap the dictionary entries for real, permissioned
+ * reviews and set this to false before launch.
+ */
+export const PLACEHOLDER_TESTIMONIALS = true
+
+/**
+ * Testimonial identity that must not change between languages: a stable id, the
+ * star rating and the product the customer bought. Quotes, names and cities are
+ * translated in the dictionaries.
+ */
+export const testimonialMeta = [
+  { id: 'salma', rating: 5, product: 'Sheikh Zayed Oud' },
+  { id: 'youssef', rating: 5, product: 'Malikat Al Arab' },
+  { id: 'nadia', rating: 5, product: 'Yara' },
+] as const
+
+export type TestimonialId = (typeof testimonialMeta)[number]['id']
+
+/** Product merchandising tags, translated by key. */
+export type ProductTagKey =
+  | 'Bestseller'
+  | 'Signature'
+  | 'Doux'
+  | 'Exclusif'
+  | 'Intense'
+  | 'Clean'
+  | 'Coup de cœur'
+  | 'Frais'
+  | 'Premium'
+  | 'Nouveau'
+  | 'Élégant'
+  | 'Mystère'
+  | 'Classique'
+  | 'Prestige'
+  | 'Puissant'
+
+/* -------------------------------------------------------------------------- */
+/* Legacy data                                                                */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Olfactory-family blurbs. Kept for reference but not rendered by any current
+ * section - the storefront presents families through `categoryMeta` and the
+ * collection filters instead.
+ */
 export type ScentFamilyMeta = {
   name: ScentFamily
   tagline: string
@@ -91,157 +183,3 @@ export const scentFamilies: ScentFamilyMeta[] = [
     gradient: 'from-[#62664d] via-[#a08a63] to-[#d1c791]',
   },
 ]
-
-export const customerBenefits = [
-  {
-    icon: 'Truck',
-    title: 'Livraison partout au Maroc',
-    description:
-      'Expédition partout au Maroc en 24 à 48h ouvrables, suivi de commande par WhatsApp.',
-  },
-  {
-    icon: 'Wallet',
-    title: 'Paiement à la livraison',
-    description:
-      'Vous payez seulement lorsque la commande est entre vos mains. Aucun acompte demandé.',
-  },
-  {
-    icon: 'ShieldCheck',
-    title: 'Produits soigneusement sélectionnés',
-    description:
-      'Des flacons finis et contrôlés. Nos concessions sont garanties à vie par la maison.',
-  },
-  {
-    icon: 'MessageCircle',
-    title: 'Service client',
-    description:
-      'Une équipe à Casablanca vous aide à choisir la fragrance qui vous ressemble vraiment.',
-  },
-] as const
-
-/**
- * PLACEHOLDER CONTENT — NOT FOR PRODUCTION.
- *
- * These quotes are written examples, not real customers. Publishing invented
- * testimonials as social proof is a consumer-protection problem in most
- * markets. Swap every entry for a real, permissioned review before launch;
- * the layout reads from the same shape, so no code change is needed.
- */
-export const PLACEHOLDER_TESTIMONIALS = true
-
-export const testimonials = [
-  {
-    quote:
-      "Le Sheikh Zayed Oud est une tuerie. J'en ai offert à mon frère pour son mariage, il n'en parlait plus.",
-    name: 'Salma B.',
-    city: 'Casablanca',
-    rating: 5,
-    product: 'Sheikh Zayed Oud',
-  },
-  {
-    quote:
-      "Commandé un mardi, reçu le mercredi. Le flacon est lourd, la qualité est là. Impeccable.",
-    name: 'Youssef A.',
-    city: 'Rabat',
-    rating: 5,
-    product: 'Malikat Al Arab',
-  },
-  {
-    quote:
-      "J'hésitais entre l'oud et l'ambre. Ils m'ont conseillé Yara sur WhatsApp, c'est exactement ce que je cherchais.",
-    name: 'Nadia E.',
-    city: 'Marrakech',
-    rating: 5,
-    product: 'Yara',
-  },
-] as const
-
-export const promotionalOffer = {
-  eyebrow: 'Édition limitée',
-  title: 'Oud Royale',
-  description:
-    'Une sélection de nos six meilleurs oud, à prix de lancement pour une durée limitée.',
-  discount: '-15%',
-  code: 'OUD15',
-  details: [
-    'Livraison offerte dès 500 DH',
-    'Paiement à la livraison',
-    'Flacons de 50 ml garantis',
-  ],
-} as const
-
-export const footerColumns = [
-  {
-    title: 'Collections',
-    links: [
-      { label: 'Tous les parfums', href: '#collection' },
-      { label: 'Parfums Homme', href: '#collection?genre=Homme' },
-      { label: 'Parfums Femme', href: '#collection?genre=Femme' },
-      { label: 'Oud', href: '#categories' },
-      { label: 'Ambre', href: '#categories' },
-      { label: 'Bestsellers', href: '#bestsellers' },
-    ],
-  },
-  {
-    title: 'La maison',
-    links: [
-      { label: 'À propos', href: '#histoire' },
-      { label: 'Notre histoire', href: '#histoire' },
-      { label: 'Service client', href: '#avantages' },
-      { label: 'Nous contacter', href: '#contact' },
-    ],
-  },
-] as const
-
-export const categoryShowcase = [
-  {
-    slug: 'homme',
-    name: 'Parfums Homme',
-    eyebrow: 'Pour lui',
-    description:
-      'Oud fumé, ambre massif et cuir. Des compositions structurées pour une présence qui ne demande pas confirmation.',
-    href: '#collection?genre=Homme',
-    image: '/products/sheikh-zayed-oud.jpg',
-    available: true,
-  },
-  {
-    slug: 'femme',
-    name: 'Parfums Femme',
-    eyebrow: 'Pour elle',
-    description:
-      'Rose de Damas, ambre suifé et musc blanc. Des floralisations chaudes qui tiennent jusqu’au bout de la nuit.',
-    href: '#collection?genre=Femme',
-    image: '/products/lailat-al-arab.jpg',
-    available: true,
-  },
-  {
-    slug: 'oud',
-    name: 'Oud',
-    eyebrow: 'Le roi des parfums',
-    description:
-      'Bois d’agar fumé, la famille la plus profonde et la plus tenace de la maison. Notre signature.',
-    href: '#collection?family=Oud',
-    image: '/products/oud-amber-noir.jpg',
-    available: true,
-  },
-  {
-    slug: 'unisex',
-    name: 'Unisex',
-    eyebrow: 'Bientôt disponible',
-    description:
-      'Des compositions partagées, pensées pour n’appartenir à personne. Ouverture prochaine.',
-    href: '#collection',
-    image: '/products/oud-amber-bleu.jpg',
-    available: false,
-  },
-  {
-    slug: 'coffrets',
-    name: 'Coffrets',
-    eyebrow: 'Bientôt disponible',
-    description:
-      'Coffrets découverte et éditions cadeaux, assemblés à la main à Casablanca. Bientôt disponible.',
-    href: '#collection',
-    image: '/products/makhsouse-oud.jpg',
-    available: false,
-  },
-] as const

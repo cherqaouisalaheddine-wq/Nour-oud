@@ -6,6 +6,7 @@ import type { FamilyFilter, GenderFilter, Product, ScentFamily } from '@/lib/pro
 import { countByFamily, familyFilters, filterProducts, genderFilters } from '@/lib/products'
 import { ProductCard } from '@/components/product-card'
 import { Reveal } from '@/components/reveal'
+import { useI18n } from '@/components/i18n/locale-provider'
 
 type CollectionGridProps = {
   gender: GenderFilter
@@ -27,6 +28,8 @@ export function CollectionGrid({
   query,
   onView,
 }: CollectionGridProps) {
+  const { dict } = useI18n()
+
   // Shared entry point so the result count can never disagree with the grid.
   const results = useMemo(
     () => filterProducts({ gender, family, query }),
@@ -39,14 +42,14 @@ export function CollectionGrid({
         <Reveal>
           <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
             <div>
-              <p className="eyebrow">Notre Collection</p>
+              <p className="eyebrow">{dict.collection.eyebrow}</p>
               <h2 className="section-title mt-4 max-w-lg">
-                Trouvez votre <em className="font-light italic">signature</em>
+                {dict.collection.titleLead}{' '}
+                <em className="font-light italic">{dict.collection.titleEm}</em>
               </h2>
             </div>
             <p className="max-w-xs text-sm leading-relaxed text-[var(--ink-muted)]">
-              Chaque flacon est composé à partir de matières premières nobles,
-              sélectionnées et assemblées au Maroc.
+              {dict.collection.subtitle}
             </p>
           </div>
         </Reveal>
@@ -57,7 +60,7 @@ export function CollectionGrid({
             <div
               className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1"
               role="group"
-              aria-label="Filtrer par genre"
+              aria-label={dict.collection.genderAria}
             >
               {genderFilters.map((option) => (
                 <button
@@ -71,7 +74,7 @@ export function CollectionGrid({
                       : 'border-[var(--hairline)] hover:border-[var(--ink)]'
                   }`}
                 >
-                  {option === 'Tous' ? 'Tous' : option}
+                  {dict.filters.gender[option]}
                 </button>
               ))}
             </div>
@@ -79,7 +82,7 @@ export function CollectionGrid({
             <div
               className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1"
               role="group"
-              aria-label="Filtrer par famille olfactive"
+              aria-label={dict.collection.familyAria}
             >
               {familyFilters.map((option) => (
                 <button
@@ -93,7 +96,7 @@ export function CollectionGrid({
                       : 'text-[var(--ink-muted)] hover:text-[var(--ink)]'
                   }`}
                 >
-                  {option === 'Toutes' ? 'Toutes les familles' : option}
+                  {dict.filters.family[option]}
                 </button>
               ))}
             </div>
@@ -102,19 +105,17 @@ export function CollectionGrid({
 
         {/* Result count, announced politely for screen readers. */}
         <p className="mt-6 text-xs tracking-[0.14em] uppercase text-[var(--ink-muted)]" aria-live="polite">
-          {results.length} {results.length === 1 ? 'parfum' : 'parfums'}
-          {query && ` pour « ${query} »`}
+          {dict.collection.results(results.length, query || undefined)}
         </p>
 
         {results.length === 0 ? (
           <div className="flex flex-col items-center justify-center border border-dashed border-[var(--hairline-strong)] px-6 py-24 text-center">
             <SearchX className="size-9 text-[var(--hairline-strong)]" strokeWidth={1} aria-hidden="true" />
             <p className="mt-6 font-[family-name:var(--font-display)] text-2xl">
-              Aucun parfum ne correspond
+              {dict.collection.emptyTitle}
             </p>
             <p className="mt-2 max-w-sm text-sm leading-relaxed text-[var(--ink-muted)]">
-              Essayez un autre terme, ou effacez les filtres pour parcourir
-              l&apos;intégralité de la collection.
+              {dict.collection.emptyText}
             </p>
             <button
               type="button"
@@ -124,7 +125,7 @@ export function CollectionGrid({
               }}
               className="btn-outline mt-8"
             >
-              Réinitialiser les filtres
+              {dict.collection.reset}
             </button>
           </div>
         ) : (
@@ -143,7 +144,7 @@ export function CollectionGrid({
             {FAMILY_COUNTS.map((option) => (
               <div key={option} className="bg-[var(--bone)] px-5 py-6">
                 <dt className="text-[0.5625rem] tracking-[0.18em] uppercase text-[var(--ink-muted)]">
-                  {option}
+                  {dict.filters.family[option]}
                 </dt>
                 <dd className="mt-2 font-[family-name:var(--font-display)] text-3xl tabular-nums">
                   {countByFamily(option)}

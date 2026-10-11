@@ -4,13 +4,21 @@ export type ScentFamily = 'Oud' | 'Ambre' | 'Musc' | 'Floral'
 
 export type Product = {
   slug: string
+  /** Latin product name. Brand names stay Latin in both languages. */
   name: string
+  /** Arabic name, shown as the primary title in the Arabic storefront. */
   nameAr: string
   price: number
   gender: Gender
   category: ScentFamily
+  /** Olfactory notes, French. */
   notes: string
+  /** Olfactory notes, Arabic. */
+  notesAr: string
+  /** Editorial description, French. */
   description: string
+  /** Editorial description, Arabic. */
+  descriptionAr: string
   image: string
   color: string
   tag: string
@@ -23,7 +31,9 @@ export type Product = {
  *
  * `slug`, `description`, `rating` and `reviews` were added so cards, the
  * quick-view dialog and structured data can all key off stable identifiers.
- * Prices, notes, imagery and merchandising tags are unchanged.
+ * Prices, notes, imagery and merchandising tags are unchanged. The Arabic
+ * fields (`nameAr`, `notesAr`, `descriptionAr`) were added for the bilingual
+ * storefront; Latin brand names are intentionally kept as-is.
  */
 export const products: Product[] = [
   {
@@ -34,8 +44,11 @@ export const products: Product[] = [
     gender: 'Femme',
     category: 'Ambre',
     notes: 'Ambre · Oud · Rose',
+    notesAr: 'عنبر · عود · ورد',
     description:
-      "Une ambree solaire ou la rose de Taif rencontre un oud velours. Chaleureuse et enveloppante, elle accompagne la femme du soir jusqu'au bout de la nuit.",
+      "Une ambrée solaire où la rose de Taïf rencontre un oud velours. Chaleureuse et enveloppante, elle accompagne la femme du soir jusqu'au bout de la nuit.",
+    descriptionAr:
+      'عطر عنبري مشمس يلتقي فيه ورد الطائف بالعود المخملي. دافئ ومحيط، يرافق أنوثة المساء حتى آخر الليل.',
     image: '/products/ameerat.jpg',
     color: 'from-[#5d2b19] to-[#b86b32]',
     tag: 'Bestseller',
@@ -50,8 +63,11 @@ export const products: Product[] = [
     gender: 'Femme',
     category: 'Musc',
     notes: 'Musc blanc · Ambre · Fleurs',
+    notesAr: 'مسك أبيض · عنبر · زهور',
     description:
-      "Un musc blanc d'une purete absolue, pose sur un lit de fleurs blanches et d'ambre blond. Une signature fraiche et propre qui reste proche de la peau.",
+      "Un musc blanc d'une pureté absolue, posé sur un lit de fleurs blanches et d'ambre blond. Une signature fraîche et propre qui reste proche de la peau.",
+    descriptionAr:
+      'مسك أبيض بنقاء مطلق، يرتكز على فراش من الزهور البيضاء والعنبر الأشقر. توقيع منعش ونقي يبقى قريباً من البشرة.',
     image: '/products/white.jpg',
     color: 'from-[#7a3a18] to-[#d8953b]',
     tag: 'Signature',
@@ -66,8 +82,11 @@ export const products: Product[] = [
     gender: 'Homme',
     category: 'Oud',
     notes: 'Oud · Safran · Bois précieux',
+    notesAr: 'عود · زعفران · أخشاب نفيسة',
     description:
-      "L'oud prive du matin : safran, bois de santal et une touche de cuir fume. Une elegance discrete, parfaite pour les journees qui comptent.",
+      "L'oud privé du matin : safran, bois de santal et une touche de cuir fumé. Une élégance discrète, parfaite pour les journées qui comptent.",
+    descriptionAr:
+      'عود الصباح الخاص: زعفران وخشب الصندل ولمسة من الجلد المدخّن. أناقة هادئة، مثالية للأيام التي تُحسَب.',
     image: '/products/red-oud.jpg',
     color: 'from-[#713b42] to-[#d49aa0]',
     tag: 'Doux',
@@ -82,8 +101,11 @@ export const products: Product[] = [
     gender: 'Femme',
     category: 'Floral',
     notes: 'Rose · Ambre · Musc',
+    notesAr: 'ورد · عنبر · مسك',
     description:
-      "Une nuit arabe en fiole : rose de Damas, ambre suife et musc blanc. Opulente mais jamais sucree, elle cree une presence magnetique apres le coucher du soleil.",
+      "Une nuit arabe en fiole : rose de Damas, ambre suifé et musc blanc. Opulente mais jamais sucrée, elle crée une présence magnétique après le coucher du soleil.",
+    descriptionAr:
+      'ليلة عربية في قارورة: ورد دمشقي وعنبر دافئ ومسك أبيض. غنية دون حلاوة مبالغ فيها، تخلق حضوراً جاذباً بعد غروب الشمس.',
     image: '/products/lailat-al-arab.jpg',
     color: 'from-[#1f2c31] to-[#607379]',
     tag: 'Exclusif',
@@ -98,8 +120,11 @@ export const products: Product[] = [
     gender: 'Homme',
     category: 'Oud',
     notes: 'Oud · Ambre · Épices',
+    notesAr: 'عود · عنبر · توابل',
     description:
-      "Un oud fume tenu par l'ambre et les epices chaudes. Puissant et structure, un parfum de caractere pour ceux qui assument leur signature.",
+      "Un oud fumé tenu par l'ambre et les épices chaudes. Puissant et structuré, un parfum de caractère pour ceux qui assument leur signature.",
+    descriptionAr:
+      'عود مدخّن يعتليه العنبر والتوابل الدافئة. قوي ومتماسك، عطر ذو شخصية لمن يتحمّلون توقيعهم.',
     image: '/products/qasas-hudson.jpg',
     color: 'from-[#1d2022] to-[#61615d]',
     tag: 'Intense',
@@ -114,8 +139,11 @@ export const products: Product[] = [
     gender: 'Homme',
     category: 'Oud',
     notes: 'Oud · Ambre · Bois précieux',
+    notesAr: 'عود · عنبر · أخشاب نفيسة',
     description:
-      "L'oud le plus accessible de la maison : bois d'agar, ambre clair et une finition champetre. Le point d'entree ideal dans l'univers du oud.",
+      "L'oud le plus accessible de la maison : bois d'agar, ambre clair et une finition veloutée. Le point d'entrée idéal dans l'univers du oud.",
+    descriptionAr:
+      'أكثر عطور العود يسراً في الدار: خشب العود والعنبر الفاتح ولمسة نهائية مخملية. المدخل الأمثل إلى عالم العود.',
     image: '/products/qasas-inferial.jpg',
     color: 'from-[#6e6c5d] to-[#c8c0a7]',
     tag: 'Clean',
@@ -130,8 +158,11 @@ export const products: Product[] = [
     gender: 'Homme',
     category: 'Oud',
     notes: 'Oud rouge · Ambre · Cuir',
+    notesAr: 'عود أحمر · عنبر · جلد',
     description:
-      "Oud rouge, cuir tanne et ambre brule. Une composition moderne et magnetique, avec l'allure d'un costume bien coupe.",
+      "Oud rouge, cuir tanné et ambre brûlé. Une composition moderne et magnétique, avec l'allure d'un costume bien coupé.",
+    descriptionAr:
+      'عود أحمر وجلد مدبوغ وعنبر محروق. تركيبة عصرية وجاذبة، بأناقة بذلة مُحكمة القَصّ.',
     image: '/products/qasas-only-one.jpg',
     color: 'from-[#3d251d] to-[#99714f]',
     tag: 'Coup de cœur',
@@ -146,8 +177,11 @@ export const products: Product[] = [
     gender: 'Femme',
     category: 'Floral',
     notes: 'Rose · Jasmin · Musc',
+    notesAr: 'ورد · ياسمين · مسك',
     description:
-      "Un bouquet frais et lumineux : rose tendre, jasmin sambac et musc blanc. Leger et solaire, ideal pour les journees chaudes.",
+      'Un bouquet frais et lumineux : rose tendre, jasmin sambac et musc blanc. Léger et solaire, idéal pour les journées chaudes.',
+    descriptionAr:
+      'باقة منعشة ومشرقة: ورد ناعم وياسمين سامباك ومسك أبيض. خفيف ومشمس، مثالي للأيام الحارة.',
     image: '/products/qasas-blush.jpg',
     color: 'from-[#62664d] to-[#d1c791]',
     tag: 'Frais',
@@ -162,8 +196,11 @@ export const products: Product[] = [
     gender: 'Femme',
     category: 'Ambre',
     notes: 'Ambre · Rose · Oud',
+    notesAr: 'عنبر · ورد · عود',
     description:
-      "La piece maitresse de la maison. Ambre profond, rose royale et oud de Mysore dans une concentration rare. Un parfum qui se retient.",
+      'La pièce maîtresse de la maison. Ambre profond, rose royale et oud de Mysore dans une concentration rare. Un parfum qui se retient.',
+    descriptionAr:
+      'القطعة المحورية في الدار. عنبر عميق وورد ملكي وعود ميسور بتركيز نادر. عطر يبقى في الذاكرة.',
     image: '/products/malikat-al-arab.jpg',
     color: 'from-[#261714] to-[#8b4d2f]',
     tag: 'Premium',
@@ -178,8 +215,11 @@ export const products: Product[] = [
     gender: 'Homme',
     category: 'Oud',
     notes: 'Oud · Cuir · Ambre',
+    notesAr: 'عود · جلد · عنبر',
     description:
-      "Inspire des grands deserts du Najd : oud sec, cuir patine et ambre sombre. Sec, elegant, profond, un parfum qui ne demande qu'a etre decouvert.",
+      "Inspiré des grands déserts du Najd : oud sec, cuir patiné et ambre sombre. Sec, élégant, profond, un parfum qui ne demande qu'à être découvert.",
+    descriptionAr:
+      'مستوحى من صحارى نجد الشاسعة: عود جاف وجلد عتيق وعنبر داكن. جاف وأنيق وعميق، عطر لا يطلب سوى أن يُكتشَف.',
     image: '/products/najdi.jpg',
     color: 'from-[#171717] to-[#80684d]',
     tag: 'Nouveau',
@@ -194,8 +234,11 @@ export const products: Product[] = [
     gender: 'Homme',
     category: 'Oud',
     notes: 'Oud blanc · Ambre · Bois',
+    notesAr: 'عود أبيض · عنبر · خشب',
     description:
-      "L'oud blanc dans sa version la plus noble : bois de santal, ambre pale et une proprete minerale. Elegant et lumineux, portable en toute saison.",
+      "L'oud blanc dans sa version la plus noble : bois de santal, ambre pâle et une propreté minérale. Élégant et lumineux, portable en toute saison.",
+    descriptionAr:
+      'العود الأبيض في أنبل صوره: خشب الصندل وعنبر شاحب ونقاء معدني. أنيق ومشرق، يُلبَس في كل الفصول.',
     image: '/products/ameer-al-oudh-white.jpg',
     color: 'from-[#d7c6a5] to-[#fff6df]',
     tag: 'Élégant',
@@ -210,8 +253,11 @@ export const products: Product[] = [
     gender: 'Homme',
     category: 'Oud',
     notes: 'Oud · Épices · Bois précieux',
+    notesAr: 'عود · توابل · أخشاب نفيسة',
     description:
-      "Oud, épices chaudes et bois precieux dans une ambiance de soir tardif. Dense, specifique et durable.",
+      "Oud, épices chaudes et bois précieux dans une ambiance de soir tardif. Dense, spécifique et durable.",
+    descriptionAr:
+      'عود وتوابل دافئة وأخشاب نفيسة في أجواء الليل المتأخّر. كثيف ومميّز وثابت.',
     image: '/products/lailat-khamis.jpg',
     color: 'from-[#171717] to-[#9b712d]',
     tag: 'Intense',
@@ -226,8 +272,11 @@ export const products: Product[] = [
     gender: 'Homme',
     category: 'Ambre',
     notes: 'Ambre · Cuir · Safran',
+    notesAr: 'عنبر · جلد · زعفران',
     description:
-      "L'heritage sheikhzadien : ambre noble, cuir souple et safran. Un parfum de decouverte, genereux, qui evoque le voyage.",
+      "L'héritage sheikhzadien : ambre noble, cuir souple et safran. Un parfum de découverte, généreux, qui évoque le voyage.",
+    descriptionAr:
+      'إرث شيخ زايد: عنبر نبيل وجلد طري وزعفران. عطر استكشاف، كريم، يستدعي روح السفر.',
     image: '/products/sheikh-zayed-ataa.jpg',
     color: 'from-[#3d1714] to-[#9b6935]',
     tag: 'Signature',
@@ -242,8 +291,11 @@ export const products: Product[] = [
     gender: 'Homme',
     category: 'Musc',
     notes: 'Musc blanc · Ambre · Rose',
+    notesAr: 'مسك أبيض · عنبر · ورد',
     description:
-      "Musc blanc, ambre doux et rose discret. Une composition ronde et accueillante, celle que l'on porte pour recevoir ses proches.",
+      "Musc blanc, ambre doux et rose discrète. Une composition ronde et accueillante, celle que l'on porte pour recevoir ses proches.",
+    descriptionAr:
+      'مسك أبيض وعنبر ناعم وورد خفيف. تركيبة مستديرة ومرحّبة، تلك التي تُلبَس لاستقبال الأحبّة.',
     image: '/products/sheikh-zayed-musk.jpg',
     color: 'from-[#e9e0d1] to-[#718b68]',
     tag: 'Doux',
@@ -258,8 +310,11 @@ export const products: Product[] = [
     gender: 'Homme',
     category: 'Oud',
     notes: 'Oud · Ambre · Notes marines',
+    notesAr: 'عود · عنبر · نوتات بحرية',
     description:
-      "L'oud marin : notes marines, ambre dore et oud fume. Une tension rare entre l'ocean et le desert, signature moderne et affirmee.",
+      "L'oud marin : notes marines, ambre doré et oud fumé. Une tension rare entre l'océan et le désert, signature moderne et affirmée.",
+    descriptionAr:
+      'العود البحري: نوتات بحرية وعنبر ذهبي وعود مدخّن. توازن نادر بين المحيط والصحراء، توقيع عصري وواثق.',
     image: '/products/manasik-oud-amber-bleu.jpg',
     color: 'from-[#0b2236] to-[#b58b40]',
     tag: 'Exclusif',
@@ -274,8 +329,11 @@ export const products: Product[] = [
     gender: 'Homme',
     category: 'Oud',
     notes: 'Oud · Bois fumé · Ambre',
+    notesAr: 'عود · خشب مدخّن · عنبر',
     description:
-      "Oud intense, bois fume et ambre profond. La piece la plus radicale de la collection homme, une vraie signature de pouvoir.",
+      'Oud intense, bois fumé et ambre profond. La pièce la plus radicale de la collection homme, une vraie signature de pouvoir.',
+    descriptionAr:
+      'عود قوي وخشب مدخّن وعنبر عميق. أكثر قطع المجموعة الرجالية جرأةً، توقيع حقيقي للقوة.',
     image: '/products/sheikh-zayed-oud.jpg',
     color: 'from-[#11100e] to-[#b5823d]',
     tag: 'Premium',
@@ -290,8 +348,11 @@ export const products: Product[] = [
     gender: 'Homme',
     category: 'Oud',
     notes: 'Oud noir · Ambre · Cuir',
+    notesAr: 'عود أسود · عنبر · جلد',
     description:
-      "Le Noir de la maison : oud noir fume, ambre brule et cuir sombre. Mysterieux et nocturne, il ne se revele jamais tout a fait.",
+      'Le Noir de la maison : oud noir fumé, ambre brûlé et cuir sombre. Mystérieux et nocturne, il ne se révèle jamais tout à fait.',
+    descriptionAr:
+      'الأسود في الدار: عود أسود مدخّن وعنبر محروق وجلد داكن. غامض وليلي، لا يكشف عن نفسه تماماً أبداً.',
     image: '/products/manasik-oud-amber-noir.jpg',
     color: 'from-[#0e0c0b] to-[#8c5a22]',
     tag: 'Mystère',
@@ -306,8 +367,11 @@ export const products: Product[] = [
     gender: 'Homme',
     category: 'Oud',
     notes: 'Oud · Ambre · Bois',
+    notesAr: 'عود · عنبر · خشب',
     description:
-      "La version originelle d'Ameer Al Oudh : oud classique, ambre et bois. Un classique indemodable, qui ne se demodera jamais.",
+      "La version originelle d'Ameer Al Oudh : oud classique, ambre et bois. Un classique intemporel, qui traverse les générations.",
+    descriptionAr:
+      'النسخة الأصلية من أمير العود: عود كلاسيكي وعنبر وخشب. كلاسيكي خالد، يعبر الأجيال.',
     image: '/products/ameer-al-oudh-original.jpg',
     color: 'from-[#1a1410] to-[#d1a05b]',
     tag: 'Classique',
@@ -322,8 +386,11 @@ export const products: Product[] = [
     gender: 'Homme',
     category: 'Oud',
     notes: 'Oud précieux · Ambre · Musc',
+    notesAr: 'عود نفيس · عنبر · مسك',
     description:
-      "Un oud sur-mesure, compose a partir de matieres premières nobles et d'un musc selectionne. Le sommet de la collection, reserve aux inities.",
+      "Un oud sur-mesure, composé à partir de matières premières nobles et d'un musc sélectionné. Le sommet de la collection, réservé aux initiés.",
+    descriptionAr:
+      'عود على المقاس، مركَّب من مواد أولية نفيسة ومسك منتقى. قمة المجموعة، لعشّاق التميّز.',
     image: '/products/makhsouse-oud.jpg',
     color: 'from-[#151313] to-[#9c692d]',
     tag: 'Prestige',
@@ -338,8 +405,11 @@ export const products: Product[] = [
     gender: 'Femme',
     category: 'Floral',
     notes: 'Rose · Pêche · Musc',
+    notesAr: 'ورد · خوخ · مسك',
     description:
-      "Une floraison delicate : rose tendre, peche juteuse et musc blanc. Une fraicheur feminine, lumineuse et facile a porter.",
+      'Une floraison délicate : rose tendre, pêche juteuse et musc blanc. Une fraîcheur féminine, lumineuse et facile à porter.',
+    descriptionAr:
+      'إزهار رقيق: ورد ناعم وخوخ عصيري ومسك أبيض. نضارة أنثوية، مشرقة وسهلة اللبس.',
     image: '/products/yara.jpg',
     color: 'from-[#7d3b4a] to-[#e5a7b4]',
     tag: 'Nouveau',
@@ -354,8 +424,11 @@ export const products: Product[] = [
     gender: 'Homme',
     category: 'Oud',
     notes: 'Oud · Cuir · Ambre',
+    notesAr: 'عود · جلد · عنبر',
     description:
-      "Le guide : oud, cuir et ambre dans un equilibre sec et elegant. Une presence calme mais assuree.",
+      'Le guide : oud, cuir et ambre dans un équilibre sec et élégant. Une présence calme mais assurée.',
+    descriptionAr:
+      'القائد: عود وجلد وعنبر في توازن جاف وأنيق. حضور هادئ لكن واثق.',
     image: '/products/qaed.jpg',
     color: 'from-[#2b2118] to-[#9a7448]',
     tag: 'Intense',
@@ -370,8 +443,11 @@ export const products: Product[] = [
     gender: 'Homme',
     category: 'Ambre',
     notes: 'Ambre · Cuir · Épices',
+    notesAr: 'عنبر · جلد · توابل',
     description:
-      "Le lion. Ambre massif, cuir et epices, une composition totalement assumee. Pour ceux qui veulent etre sentis avant d'etre vus.",
+      "Le lion. Ambre massif, cuir et épices, une composition totalement assumée. Pour ceux qui veulent être sentis avant d'être vus.",
+    descriptionAr:
+      'الأسد. عنبر غني وجلد وتوابل، تركيبة واثقة تماماً. لمن يريد أن يُشَمّ قبل أن يُرى.',
     image: '/products/asad.jpg',
     color: 'from-[#3f1c14] to-[#b06a34]',
     tag: 'Puissant',
@@ -386,8 +462,11 @@ export const products: Product[] = [
     gender: 'Homme',
     category: 'Oud',
     notes: 'Oud · Ambre · Vanille',
+    notesAr: 'عود · عنبر · فانيليا',
     description:
-      "Un heritage sucre-boise : oud, ambre et une touche de vanille. Le classique revisite, moderne et enveloppant.",
+      'Un héritage sucré-boisé : oud, ambre et une touche de vanille. Le classique revisité, moderne et enveloppant.',
+    descriptionAr:
+      'إرث حلو-خشبي: عود وعنبر ولمسة من الفانيليا. الكلاسيكي في ثوب جديد، عصري ومحيط.',
     image: '/products/maahir-legacy.jpg',
     color: 'from-[#1e1610] to-[#c39a5c]',
     tag: 'Prestige',
@@ -402,8 +481,11 @@ export const products: Product[] = [
     gender: 'Homme',
     category: 'Ambre',
     notes: 'Ambre · Oud · Musc',
+    notesAr: 'عنبر · عود · مسك',
     description:
-      "La trilogie Manasik dans son expression ambree : oud classique, ambre dore et musc. Equilibre, elegant, facile a porter au quotidien.",
+      "La trilogie Manasik dans son expression ambrée : oud classique, ambre doré et musc. Équilibré, élégant, facile à porter au quotidien.",
+    descriptionAr:
+      'ثلاثية مناسك في تعبيرها العنبري: عود كلاسيكي وعنبر ذهبي ومسك. متوازن وأنيق وسهل لبساً يومياً.',
     image: '/products/manasik-oud-amber.jpg',
     color: 'from-[#241a10] to-[#b78b48]',
     tag: 'Signature',
@@ -418,8 +500,11 @@ export const products: Product[] = [
     gender: 'Homme',
     category: 'Oud',
     notes: 'Oud · Ambre · Bois',
+    notesAr: 'عود · عنبر · خشب',
     description:
-      "La fragrance la plus emblematique d'Ameer Al Oudh : oud, ambre et bois noble. Une valeur sure, la porte d'entree de la maison.",
+      "La fragrance la plus emblématique d'Ameer Al Oudh : oud, ambre et bois noble. Une valeur sûre, la porte d'entrée de la maison.",
+    descriptionAr:
+      'أيقونية أمير العود: عود وعنبر وخشب نبيل. خيار مضمون، بوابة الدخول إلى الدار.',
     image: '/products/ameer-al-oudh.jpg',
     color: 'from-[#2b2018] to-[#d0a765]',
     tag: 'Classique',
@@ -470,7 +555,11 @@ export type CatalogQuery = {
   query?: string
 }
 
-/** Single filtering entry point shared by the collection grid and its result count. */
+/**
+ * Single filtering entry point shared by the collection grid and its result
+ * count. The haystack spans both languages so a shopper can search in Arabic or
+ * Latin regardless of the active locale.
+ */
 export function filterProducts({ gender, family, query }: CatalogQuery): Product[] {
   const needle = query?.trim().toLowerCase() ?? ''
 
@@ -479,7 +568,7 @@ export function filterProducts({ gender, family, query }: CatalogQuery): Product
     if (family && family !== 'Toutes' && product.category !== family) return false
     if (!needle) return true
 
-    const haystack = `${product.name} ${product.nameAr} ${product.notes} ${product.category}`
+    const haystack = `${product.name} ${product.nameAr} ${product.notes} ${product.notesAr} ${product.category}`
     return haystack.toLowerCase().includes(needle)
   })
 }

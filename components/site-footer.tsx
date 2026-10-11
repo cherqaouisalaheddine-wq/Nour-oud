@@ -1,7 +1,8 @@
 'use client'
 
 import { Mail, MessageCircle } from 'lucide-react'
-import { footerColumns, siteConfig, whatsappLink } from '@/lib/site'
+import { siteConfig } from '@/lib/site'
+import { useI18n } from '@/components/i18n/locale-provider'
 
 /*
  * lucide-react v1 dropped brand glyphs, so the two social marks are inlined
@@ -25,18 +26,15 @@ function FacebookGlyph(props: React.SVGProps<SVGSVGElement>) {
   )
 }
 
-const SOCIAL_LINKS = [
-  { label: 'Instagram', href: siteConfig.social.instagram, Icon: InstagramGlyph },
-  { label: 'Facebook', href: siteConfig.social.facebook, Icon: FacebookGlyph },
-  {
-    label: 'WhatsApp',
-    href: whatsappLink('Bonjour NOUR EL OUD, je souhaite avoir plus d’informations.'),
-    Icon: MessageCircle,
-  },
-] as const
-
 export function SiteFooter() {
+  const { dict } = useI18n()
   const year = new Date().getFullYear()
+
+  const socialLinks = [
+    { label: 'Instagram', href: siteConfig.social.instagram, Icon: InstagramGlyph },
+    { label: 'Facebook', href: siteConfig.social.facebook, Icon: FacebookGlyph },
+    { label: 'WhatsApp', href: dict.wa.info, Icon: MessageCircle },
+  ] as const
 
   return (
     <footer id="contact" className="bg-[var(--ink)] px-5 pt-16 pb-8 text-[var(--bone)] lg:px-8 lg:pt-20">
@@ -56,12 +54,11 @@ export function SiteFooter() {
               </span>
             </div>
             <p className="mt-5 max-w-xs text-sm leading-[1.9] text-[var(--bone)]/55">
-              Maison de parfum marocaine. Oud, ambre et musc sélectionnés et
-              assemblés à Casablanca.
+              {dict.footer.about}
             </p>
 
             <div className="mt-6 flex gap-2">
-              {SOCIAL_LINKS.map(({ label, href, Icon }) => (
+              {socialLinks.map(({ label, href, Icon }) => (
                 <a
                   key={label}
                   href={href}
@@ -77,7 +74,7 @@ export function SiteFooter() {
           </div>
 
           {/* Navigation + categories */}
-          {footerColumns.map((column) => (
+          {dict.footer.columns.map((column) => (
             <nav key={column.title} aria-label={column.title}>
               <h2 className="text-[0.5625rem] tracking-[0.22em] uppercase text-[var(--champagne)]">
                 {column.title}
@@ -100,46 +97,46 @@ export function SiteFooter() {
           {/* Contact */}
           <div>
             <h2 className="text-[0.5625rem] tracking-[0.22em] uppercase text-[var(--champagne)]">
-              Contact
+              {dict.footer.contactTitle}
             </h2>
             <address className="mt-5 flex flex-col gap-3 text-sm not-italic text-[var(--bone)]/60">
-              <p>Casablanca, Maroc</p>
+              <p>{dict.footer.location}</p>
               <p>
                 <a
-                  href="mailto:bonjour@nour-el-oud.ma"
+                  href={`mailto:${siteConfig.email}`}
                   className="inline-flex items-center gap-2 transition-colors duration-400 hover:text-[var(--bone)]"
                 >
                   <Mail className="size-3.5" strokeWidth={1.5} aria-hidden="true" />
-                  bonjour@nour-el-oud.ma
+                  {siteConfig.email}
                 </a>
               </p>
-              <p>Lun – Sam · 9h – 19h</p>
+              <p>{dict.footer.hours}</p>
             </address>
 
             <a
-              href={whatsappLink('Bonjour NOUR EL OUD, j’ai une question.')}
+              href={dict.wa.question}
               target="_blank"
               rel="noreferrer"
               className="btn-outline-bone mt-6 min-h-11! px-5! py-2.5! text-[0.625rem]!"
             >
               <MessageCircle className="size-3.5" strokeWidth={1.5} aria-hidden="true" />
-              Nous écrire
+              {dict.footer.writeUs}
             </a>
           </div>
         </div>
 
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-[var(--bone)]/12 pt-7 sm:flex-row">
           <p className="text-xs text-[var(--bone)]/45">
-            © {year} {siteConfig.name}. Tous droits réservés.
+            {dict.footer.copyright(year)}
           </p>
           <div className="flex gap-6 text-xs text-[var(--bone)]/45">
             <a href="#collection" className="transition-colors hover:text-[var(--bone)]">
-              Conditions
+              {dict.footer.terms}
             </a>
             <a href="#collection" className="transition-colors hover:text-[var(--bone)]">
-              Confidentialité
+              {dict.footer.privacy}
             </a>
-            <span className="tracking-[0.14em] uppercase">{siteConfig.origin}</span>
+            <span className="tracking-[0.14em] uppercase">{dict.brand.origin}</span>
           </div>
         </div>
       </div>

@@ -1,28 +1,12 @@
 'use client'
 
 import { MessageCircle } from 'lucide-react'
-import { whatsappLink } from '@/lib/site'
 import { Reveal } from '@/components/reveal'
-
-const PILLARS = [
-  {
-    number: '01',
-    title: 'Des matières premières nobles',
-    text: "L'oud de Mysore, l'ambre suifé et le musc blanc sont sélectionnés chez des producteurs partenaires, jamais reconstitués.",
-  },
-  {
-    number: '02',
-    title: 'Un rituel sur mesure',
-    text: "Besoin d'aide pour choisir ? Notre équipe vous guide par WhatsApp, simplement et sans engagement.",
-  },
-  {
-    number: '03',
-    title: 'Assemblé au Maroc',
-    text: 'Nos flacons sont finis et contrôlés à Casablanca, puis garantis à vie par la maison.',
-  },
-]
+import { useI18n } from '@/components/i18n/locale-provider'
 
 export function BrandStory() {
+  const { dict } = useI18n()
+
   return (
     <section
       id="histoire"
@@ -35,7 +19,7 @@ export function BrandStory() {
             <div className="aspect-4/5 overflow-hidden bg-[var(--bone-deep)]">
               <img
                 src="/products/makhsouse-oud.jpg"
-                alt="Flacon Makhsouse Oud, pièce signature de la maison NOUR EL OUD"
+                alt={dict.story.imageAlt}
                 loading="lazy"
                 className="size-full object-cover"
               />
@@ -43,36 +27,29 @@ export function BrandStory() {
             {/* Offset accent panel, hidden on small screens to avoid clutter. */}
             <div
               aria-hidden="true"
-              className="absolute -right-4 -bottom-4 -z-10 hidden h-2/3 w-1/2 border border-[var(--champagne)]/40 lg:block"
+              className="absolute -end-4 -bottom-4 -z-10 hidden h-2/3 w-1/2 border border-[var(--champagne)]/40 lg:block"
             />
           </Reveal>
 
           <div>
             <Reveal>
-              <p className="eyebrow">L&apos;art du parfum</p>
+              <p className="eyebrow">{dict.story.eyebrow}</p>
               <h2 className="section-title mt-4 max-w-md">
-                Un parfum ne se porte pas. Il se <em className="font-light italic">reconnaît</em>.
+                {dict.story.titleLead}{' '}
+                <em className="font-light italic">{dict.story.titleEm}</em>.
               </h2>
             </Reveal>
 
             <Reveal delay={100}>
               <div className="mt-8 space-y-4 text-sm leading-[1.9] text-[var(--ink-muted)]">
-                <p>
-                  NOUR EL OUD est née d&apos;une conviction simple : un bon parfum ne
-                  se remarque pas, il se retient. Il accompagne celui qui le
-                  porte et révèle ce qu&apos;il ne dit pas.
-                </p>
-                <p>
-                  De l&apos;oud fumé de Mysore au musc blanc de Cachemire, chaque
-                  composition est construite autour d&apos;une matière noble,
-                  équilibrée pour tenir sur la peau du matin jusqu&apos;à la
-                  nuit.
-                </p>
+                {dict.story.paragraphs.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
               </div>
             </Reveal>
 
             <dl className="mt-10 flex flex-col">
-              {PILLARS.map((pillar, index) => (
+              {dict.story.pillars.map((pillar, index) => (
                 <Reveal key={pillar.number} delay={160 + index * 90}>
                   <div className="flex gap-6 border-t border-[var(--hairline)] py-6">
                     <dt className="font-[family-name:var(--font-display)] text-sm text-[var(--champagne)] tabular-nums">
@@ -93,15 +70,13 @@ export function BrandStory() {
 
             <Reveal delay={420}>
               <a
-                href={whatsappLink(
-                  'Bonjour, je voudrais des conseils pour choisir un parfum.',
-                )}
+                href={dict.wa.advice}
                 target="_blank"
                 rel="noreferrer"
                 className="btn-outline mt-8"
               >
                 <MessageCircle className="size-4" strokeWidth={1.5} aria-hidden="true" />
-                Parler à un conseiller
+                {dict.story.cta}
               </a>
             </Reveal>
           </div>

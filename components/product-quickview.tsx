@@ -3,9 +3,9 @@
 import { Check, MessageCircle, Plus, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import type { Product } from '@/lib/products'
-import { formatPrice } from '@/lib/format'
-import { orderLink } from '@/lib/site'
+import type { ProductTagKey } from '@/lib/site'
 import { useCart } from '@/components/cart/cart-provider'
+import { useI18n } from '@/components/i18n/locale-provider'
 
 type QuickViewProps = {
   product: Product | null
@@ -18,6 +18,8 @@ type QuickViewProps = {
  */
 export function QuickView({ product, onClose }: QuickViewProps) {
   const { add, open } = useCart()
+  const { dict, formatPrice, productName, productAltName, productNotes, productDescription } =
+    useI18n()
   const [justAdded, setJustAdded] = useState(false)
   const closeRef = useRef<HTMLButtonElement>(null)
 
@@ -45,6 +47,8 @@ export function QuickView({ product, onClose }: QuickViewProps) {
 
   if (!product) return null
 
+  const name = productName(product)
+
   function handleAdd() {
     if (!product) return
     add(product, 1)
@@ -62,7 +66,7 @@ export function QuickView({ product, onClose }: QuickViewProps) {
     <div className="fixed inset-0 z-90 flex items-end justify-center sm:items-center sm:p-4">
       <button
         type="button"
-        aria-label="Fermer les détails"
+        aria-label={dict.quickview.closeAria}
         onClick={onClose}
         className="absolute inset-0 h-full w-full cursor-default bg-[var(--ink)]/65 backdrop-blur-sm"
       />
@@ -77,8 +81,8 @@ export function QuickView({ product, onClose }: QuickViewProps) {
           ref={closeRef}
           type="button"
           onClick={onClose}
-          aria-label="Fermer les détails"
-          className="absolute top-3 right-3 z-10 flex size-11 items-center justify-center bg-[var(--bone)]/90 text-[var(--ink)] backdrop-blur-sm transition-colors hover:bg-[var(--bone)]"
+          aria-label={dict.quickview.closeAria}
+          className="absolute top-3 end-3 z-10 flex size-11 items-center justify-center bg-[var(--bone)]/90 text-[var(--ink)] backdrop-blur-sm transition-colors hover:bg-[var(--bone)]"
         >
           <X className="size-5" strokeWidth={1.5} />
         </button>
@@ -86,47 +90,48 @@ export function QuickView({ product, onClose }: QuickViewProps) {
         <div className="relative aspect-4/5 overflow-hidden bg-[var(--bone-deep)] sm:aspect-auto sm:min-h-[30rem]">
           <img
             src={product.image}
-            alt={`Flacon du parfum ${product.name}`}
+            alt={dict.quickview.imageAlt(name)}
             className="size-full object-cover"
           />
-          <span className="absolute top-4 left-4 bg-[var(--bone)]/92 px-3 py-1 text-[0.5625rem] font-medium tracking-[0.16em] uppercase backdrop-blur-sm">
-            {product.tag}
+          <span className="absolute top-4 start-4 bg-[var(--bone)]/92 px-3 py-1 text-[0.5625rem] font-medium tracking-[0.16em] uppercase backdrop-blur-sm">
+            {dict.tags[product.tag as ProductTagKey] ?? product.tag}
           </span>
         </div>
 
         <div className="flex flex-col justify-center gap-5 p-6 sm:p-10">
           <div>
             <p className="eyebrow">
-              {product.category} · {product.gender}
+              {dict.filters.family[product.category]} · {dict.filters.gender[product.gender]}
             </p>
             <h2
               id="quickview-title"
+              dir="auto"
               className="mt-3 font-[family-name:var(--font-display)] text-3xl leading-tight font-light sm:text-4xl"
             >
-              {product.name}
+              {name}
             </h2>
-            <p className="mt-1.5 text-sm text-[var(--ink-muted)]" dir="rtl">
-              {product.nameAr}
+            <p className="mt-1.5 text-sm text-[var(--ink-muted)]" dir="auto">
+              {productAltName(product)}
             </p>
           </div>
 
           <dl className="grid grid-cols-2 gap-x-4 gap-y-3 border-y border-[var(--hairline)] py-5 text-sm">
             <div>
               <dt className="text-[0.625rem] tracking-[0.16em] uppercase text-[var(--ink-muted)]">
-                Notes
+                {dict.quickview.notesLabel}
               </dt>
-              <dd className="mt-1">{product.notes}</dd>
+              <dd className="mt-1">{productNotes(product)}</dd>
             </div>
             <div>
               <dt className="text-[0.625rem] tracking-[0.16em] uppercase text-[var(--ink-muted)]">
-                Concentration
+                {dict.quickview.concentrationLabel}
               </dt>
-              <dd className="mt-1">Eau de Parfum · 50 ml</dd>
+              <dd className="mt-1">{dict.quickview.concentrationValue}</dd>
             </div>
           </dl>
 
           <p className="text-sm leading-relaxed text-[var(--ink-muted)]">
-            {product.description}
+            {productDescription(product)}
           </p>
 
           <div className="flex items-baseline justify-between">
@@ -134,7 +139,7 @@ export function QuickView({ product, onClose }: QuickViewProps) {
               {formatPrice(product.price)}
             </p>
             <p className="text-xs text-[var(--ink-muted)]">
-              {product.rating.toFixed(1)} / 5 · {product.reviews} avis
+              {product.rating.toFixed(1)} / 5 · {dict.quickview.reviewCount(product.reviews)}
             </p>
           </div>
 
@@ -148,12 +153,12 @@ export function QuickView({ product, onClose }: QuickViewProps) {
                 {justAdded ? (
                   <>
                     <Check className="size-4" strokeWidth={2} aria-hidden="true" />
-                    Ajouté au panier
+                    {dict.quickview.added}
                   </>
                 ) : (
                   <>
                     <Plus className="size-4" strokeWidth={1.5} aria-hidden="true" />
-                    Ajouter au panier
+                    {dict.quickview.addToCart}
                   </>
                 )}
               </button>
@@ -163,19 +168,19 @@ export function QuickView({ product, onClose }: QuickViewProps) {
                   onClick={handleAddOpenCart}
                   className="btn-outline px-5!"
                 >
-                  Voir le panier
+                  {dict.quickview.viewCart}
                 </button>
               )}
             </div>
 
             <a
-              href={orderLink(product.name)}
+              href={dict.wa.order(name)}
               target="_blank"
               rel="noreferrer"
               className="btn-outline w-full"
             >
               <MessageCircle className="size-4" strokeWidth={1.5} aria-hidden="true" />
-              Commander sur WhatsApp
+              {dict.quickview.orderWhatsApp}
             </a>
           </div>
         </div>
